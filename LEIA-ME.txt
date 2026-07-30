@@ -1,0 +1,1 @@
+Versão corrigida: cada corrida usa o cenário realista do respetivo nível como fundo panorâmico, com pista e objetos 3D sobrepostos. Abre index.html mantendo a pasta assets ao lado.
