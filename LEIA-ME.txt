@@ -1,1 +1,1 @@
-Versão corrigida: cada corrida usa o cenário realista do respetivo nível como fundo panorâmico, com pista e objetos 3D sobrepostos. Abre index.html mantendo a pasta assets ao lado.
+Versão com cenários realistas e sistema de som integrado. Inclui contagem decrescente, RUSH, eventos temáticos, mudança de liderança, efeito de velocidade, chegada e pódio. O áudio é gerado pelo navegador e não necessita de ficheiros externos.
