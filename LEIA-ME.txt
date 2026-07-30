@@ -1,1 +1,5 @@
-Versão com cenários realistas e sistema de som integrado. Inclui contagem decrescente, RUSH, eventos temáticos, mudança de liderança, efeito de velocidade, chegada e pódio. O áudio é gerado pelo navegador e não necessita de ficheiros externos.
+MARBLE RUSH™ Physics V4
+
+Inclui Cannon-es, gravidade real, colisões, rampas, saltos, paredes, obstáculo rotativo, quedas, checkpoints, respawn, meta real, classificação e pódio.
+
+Abre index.html num navegador com ligação à Internet.
