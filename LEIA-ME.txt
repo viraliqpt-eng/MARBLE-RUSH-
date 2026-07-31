@@ -1,5 +1,4 @@
-MARBLE RUSH™ Physics V4
+MARBLE RUSH™ World Hub
 
-Inclui Cannon-es, gravidade real, colisões, rampas, saltos, paredes, obstáculo rotativo, quedas, checkpoints, respawn, meta real, classificação e pódio.
-
-Abre index.html num navegador com ligação à Internet.
+Mapa interativo com 11 zonas, hotspots, missões, progresso, recursos, painel de zona e transição por portal.
+Abre index.html mantendo a pasta assets ao lado.
