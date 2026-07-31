@@ -3,31 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MARBLE RUSH™ World Hub V2</title>
+<title>MARBLE RUSH™ — World Hub V3 Long Tracks</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-:root{--o:#ff5a00;--y:#ffbd00;--c:#00dfd8;--p:rgba(8,12,20,.9);--b:rgba(255,255,255,.14)}
+:root{--o:#ff5a00;--y:#ffbd00;--c:#00dfd8;--p:rgba(8,12,20,.91);--b:rgba(255,255,255,.14)}
 *{box-sizing:border-box}.hide{display:none!important}body{margin:0;overflow:hidden;background:#07111b;color:white;font-family:Arial,sans-serif}
 #map{position:fixed;inset:0;background:url('assets/world-map.png') center/cover}
 header{position:fixed;z-index:10;inset:0 0 auto;padding:14px 18px;display:flex;justify-content:space-between;background:linear-gradient(#05080ee8,transparent)}
 .logo{font-size:26px;font-weight:1000}.logo span{color:var(--o)}.res{display:flex;gap:8px}.pill{padding:9px 12px;background:var(--p);border:1px solid var(--b);border-radius:14px;font-weight:900}
 .hot{position:absolute;transform:translate(-50%,-50%);z-index:8;background:#070b12e8;color:white;border:1px solid var(--b);border-radius:13px;padding:8px 11px;font-weight:900;cursor:pointer}.hot small{display:block;color:var(--y)}.hot.lock{opacity:.45}
-#profile{position:fixed;z-index:10;left:15px;bottom:15px;width:270px;padding:14px;background:var(--p);border:1px solid var(--b);border-radius:18px}.bar{height:8px;background:#252b39;border-radius:9px;overflow:hidden}.bar div{height:100%;background:linear-gradient(90deg,var(--o),var(--y))}
-#panel{position:fixed;z-index:20;right:-430px;top:0;bottom:0;width:min(420px,100%);padding:22px;background:#080c14f8;border-left:1px solid var(--b);transition:.35s;overflow:auto}#panel.open{right:0}
+#profile{position:fixed;z-index:10;left:15px;bottom:15px;width:280px;padding:14px;background:var(--p);border:1px solid var(--b);border-radius:18px}.bar{height:8px;background:#252b39;border-radius:9px;overflow:hidden}.bar div{height:100%;background:linear-gradient(90deg,var(--o),var(--y))}
+#panel{position:fixed;z-index:20;right:-440px;top:0;bottom:0;width:min(430px,100%);padding:22px;background:#080c14f8;border-left:1px solid var(--b);transition:.35s;overflow:auto}#panel.open{right:0}
 .close{float:right;background:#ffffff16;color:white;border:1px solid var(--b);border-radius:10px;padding:8px 11px}
 .hero{height:210px;border-radius:18px;background:url('assets/world-map.png') center/cover;display:flex;align-items:end;padding:15px;font-size:29px;font-weight:1000;text-transform:uppercase}
 .track{margin-top:10px;padding:12px;background:#ffffff0d;border:1px solid var(--b);border-radius:13px}.track button{width:100%;margin-top:8px;border:0;border-radius:10px;padding:11px;background:linear-gradient(90deg,var(--o),var(--y));font-weight:1000}
+.meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.tag{font-size:11px;padding:5px 8px;border-radius:8px;background:#ffffff0f;border:1px solid var(--b)}
 #portal{position:fixed;z-index:30;inset:0;display:none;place-items:center;background:#05070b}.ring{width:190px;height:190px;border:12px solid var(--c);border-radius:50%;box-shadow:0 0 65px var(--c),inset 0 0 45px var(--c);animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}#portal b{position:absolute;font-size:25px}
-#race{position:fixed;z-index:40;inset:0;background:#05070b}.bg{position:absolute;inset:0;background:url('assets/world-map.png') center/cover;filter:brightness(.35)}#canvas{position:absolute;inset:0}
-.top{position:absolute;z-index:4;inset:0 0 auto;padding:13px 16px;display:flex;justify-content:space-between;background:linear-gradient(#000c,transparent)}.top button{background:#ffffff16;color:white;border:1px solid var(--b);border-radius:10px;padding:8px 11px}
-#board{position:absolute;z-index:4;right:14px;top:72px;width:235px;padding:12px;background:var(--p);border:1px solid var(--b);border-radius:15px}.row{display:grid;grid-template-columns:22px 12px 1fr auto;gap:7px;padding:6px 0;border-top:1px solid #ffffff10;font-size:12px}.dot{width:10px;height:10px;border-radius:50%}
-#podium{position:absolute;z-index:8;inset:0;display:grid;place-items:center;background:#000b}.card{width:min(620px,94%);padding:23px;text-align:center;background:#0e131df7;border:1px solid #ff5a0060;border-radius:22px}.places{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.place{padding:15px;background:#ffffff0e;border-radius:14px}.reward{margin:14px 0;padding:12px;background:#00dfd81a;border:1px solid #00dfd855;border-radius:13px}.actions{display:flex;gap:9px;justify-content:center}.actions button{border:0;border-radius:11px;padding:12px 15px;font-weight:1000}.primary{background:linear-gradient(90deg,var(--o),var(--y))}.secondary{background:#ffffff16;color:white}
-@media(max-width:700px){.res{display:none}.hot{font-size:10px;padding:6px 8px}#profile{width:210px}#board{width:195px}.places{grid-template-columns:1fr}}
+#race{position:fixed;z-index:40;inset:0;background:#05070b}.bg{position:absolute;inset:0;background:url('assets/world-map.png') center/cover;filter:brightness(.28) saturate(1.2)}#canvas{position:absolute;inset:0}
+.top{position:absolute;z-index:4;inset:0 0 auto;padding:13px 16px;display:flex;justify-content:space-between;gap:10px;background:linear-gradient(#000d,transparent)}.top button{background:#ffffff16;color:white;border:1px solid var(--b);border-radius:10px;padding:8px 11px}
+.hud{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}.hud span{padding:7px 10px;background:#09101ad9;border:1px solid var(--b);border-radius:10px;font-weight:900}
+#board{position:absolute;z-index:4;right:14px;top:76px;width:240px;padding:12px;background:var(--p);border:1px solid var(--b);border-radius:15px}.row{display:grid;grid-template-columns:22px 12px 1fr auto;gap:7px;padding:6px 0;border-top:1px solid #ffffff10;font-size:12px}.dot{width:10px;height:10px;border-radius:50%}
+#checkpointMsg{position:absolute;z-index:7;left:50%;top:22%;transform:translateX(-50%);padding:14px 22px;background:#08111ee8;border:1px solid #00dfd866;border-radius:15px;font-size:24px;font-weight:1000;opacity:0;transition:.25s}
+#podium{position:absolute;z-index:8;inset:0;display:grid;place-items:center;background:#000b}.card{width:min(650px,94%);padding:23px;text-align:center;background:#0e131df7;border:1px solid #ff5a0060;border-radius:22px}.places{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.place{padding:15px;background:#ffffff0e;border-radius:14px}.reward{margin:14px 0;padding:12px;background:#00dfd81a;border:1px solid #00dfd855;border-radius:13px}.actions{display:flex;gap:9px;justify-content:center}.actions button{border:0;border-radius:11px;padding:12px 15px;font-weight:1000}.primary{background:linear-gradient(90deg,var(--o),var(--y))}.secondary{background:#ffffff16;color:white}
+@media(max-width:700px){.res{display:none}.hot{font-size:10px;padding:6px 8px}#profile{width:210px}#board{width:200px}.places{grid-template-columns:1fr}.hud span:nth-child(4){display:none}}
 </style>
 </head>
 <body>
 <div id="map"></div>
-<header><div class="logo">MARBLE RUSH<span>™</span> WORLD</div><div class="res"><div class="pill">⭐ <span id="stars">0</span></div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div></div></header>
+<header><div class="logo">MARBLE RUSH<span>™</span> WORLD V3</div><div class="res"><div class="pill">⭐ <span id="stars">0</span></div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div></div></header>
 <div id="spots"></div>
 <div id="profile"><b>PedroF — Nível <span id="level">1</span></b><div class="bar" style="margin-top:9px"><div id="xpbar"></div></div><small><span id="xp">0</span>/100 XP</small></div>
 
@@ -36,9 +39,18 @@ header{position:fixed;z-index:10;inset:0 0 auto;padding:14px 18px;display:flex;j
 
 <section id="race" class="hide">
   <div class="bg"></div><div id="canvas"></div>
-  <div class="top"><button onclick="hub()">← HUB</button><b id="raceTitle"></b></div>
+  <div class="top">
+    <button onclick="hub()">← HUB</button>
+    <div class="hud">
+      <span id="raceTitle"></span>
+      <span>VOLTA <b id="lapHud">1/3</b></span>
+      <span>CHECKPOINT <b id="cpHud">1/8</b></span>
+      <span>TEMPO <b id="timeHud">00:00</b></span>
+    </div>
+  </div>
   <aside id="board"><b>🏁 CLASSIFICAÇÃO</b><div id="rows"></div></aside>
-  <div id="podium" class="hide"><div class="card"><div style="color:var(--c);font-weight:900">CORRIDA CONCLUÍDA</div><h1>PÓDIO</h1><div class="places" id="places"></div><div class="reward" id="reward"></div><div class="actions"><button class="primary" onclick="replay()">CORRER NOVAMENTE</button><button class="secondary" onclick="hub()">REGRESSAR AO MAPA</button></div></div></div>
+  <div id="checkpointMsg">CHECKPOINT!</div>
+  <div id="podium" class="hide"><div class="card"><div style="color:var(--c);font-weight:900">CORRIDA LONGA CONCLUÍDA</div><h1>PÓDIO</h1><div class="places" id="places"></div><div class="reward" id="reward"></div><div class="actions"><button class="primary" onclick="replay()">CORRER NOVAMENTE</button><button class="secondary" onclick="hub()">REGRESSAR AO MAPA</button></div></div></div>
 </section>
 
 <script>
@@ -55,23 +67,81 @@ const Z=[
 ["Aeroporto",20,76,3,["Pista 27","Hangar Turbo","Bagagem Perdida"]],
 ["Porto Marítimo",76,77,4,["Container Run","Convés Molhado","Grua Secreta"]]
 ];
-let P=JSON.parse(localStorage.getItem("mrHubV2")||'{"level":1,"xp":0,"coins":0,"gems":0,"stars":0,"records":{}}');
-let zone=null,track="",scene,camera,renderer,path,balls=[],running=false,start=0,finish=[];
+let P=JSON.parse(localStorage.getItem("mrHubV3")||'{"level":1,"xp":0,"coins":0,"gems":0,"stars":0,"records":{}}');
+let zone=null,track="",scene,camera,renderer,path,balls=[],running=false,start=0,finish=[],laps=3,checkpoints=8,lastPlayerCP=0;
 
-function save(){localStorage.setItem("mrHubV2",JSON.stringify(P));hud()}
+function save(){localStorage.setItem("mrHubV3",JSON.stringify(P));hud()}
 function hud(){level.textContent=P.level;xp.textContent=P.xp;xpbar.style.width=P.xp+"%";coins.textContent=P.coins;gems.textContent=P.gems;stars.textContent=P.stars}
 function render(){spots.innerHTML=Z.map((z,i)=>`<button class="hot ${P.level<z[3]?"lock":""}" style="left:${z[1]}%;top:${z[2]}%" onclick="openZone(${i})">${P.level<z[3]?"🔒 ":""}${z[0]}<small>NÍVEL ${z[3]}+</small></button>`).join("")}
-function openZone(i){let z=Z[i];if(P.level<z[3])return;zone=z;hero.textContent=z[0];desc.textContent="Escolhe uma das pistas desta zona.";tracks.innerHTML=z[4].map(t=>{let k=z[0]+"|"+t;return `<div class="track"><b>${t}</b><div style="font-size:12px;color:#aeb7c8">${P.records[k]?"Recorde: "+P.records[k]+"s":"Sem recorde"}</div><button onclick="enter('${t.replaceAll("'","")}')">JOGAR</button></div>`}).join("");panel.classList.add("open")}
+function openZone(i){let z=Z[i];if(P.level<z[3])return;zone=z;hero.textContent=z[0];desc.textContent="Pistas longas com 3 voltas, 8 checkpoints e vários setores.";tracks.innerHTML=z[4].map(t=>{let k=z[0]+"|"+t;return `<div class="track"><b>${t}</b><div class="meta"><span class="tag">3 voltas</span><span class="tag">8 checkpoints</span><span class="tag">2–4 min</span><span class="tag">Pista longa</span></div><div style="font-size:12px;color:#aeb7c8">${P.records[k]?"Recorde: "+P.records[k]+"s":"Sem recorde"}</div><button onclick="enter('${t.replaceAll("'","")}')">JOGAR</button></div>`}).join("");panel.classList.add("open")}
 function closePanel(){panel.classList.remove("open")}
 function enter(t){track=t;portal.style.display="grid";portalText.textContent="A ENTRAR EM "+t;setTimeout(()=>{portal.style.display="none";startRace()},1100)}
 
-function startRace(){closePanel();race.classList.remove("hide");podium.classList.add("hide");raceTitle.textContent=zone[0]+" — "+track;init3D();spawn();start=performance.now();running=true}
-function init3D(){scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,1000);camera.position.set(0,32,54);renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0,0);renderer.setSize(innerWidth,innerHeight);canvas.innerHTML="";canvas.appendChild(renderer.domElement);scene.add(new THREE.AmbientLight(0xffffff,.7));let sun=new THREE.DirectionalLight(0xffb800,1.5);sun.position.set(20,45,20);scene.add(sun);path=new THREE.CatmullRomCurve3([new THREE.Vector3(-30,22,-15),new THREE.Vector3(-16,17,-24),new THREE.Vector3(2,12,-14),new THREE.Vector3(15,7,-4),new THREE.Vector3(0,1,14),new THREE.Vector3(25,-5,20)]);scene.add(new THREE.Mesh(new THREE.TubeGeometry(path,120,1.25,14,false),new THREE.MeshStandardMaterial({color:0xff5500,metalness:.6,roughness:.2})))}
-function spawn(){balls=[];finish=[];let n=["Turbo","Neon","Fénix","Vortex","Cometa","Nitro","Solar","Pixel","Blaze","Echo","Rocket","Nova"],c=[0x00dfd8,0xff5500,0xffb800,0x7928ca,0x00ff66,0xff0055];for(let i=0;i<12;i++){let m=new THREE.Mesh(new THREE.SphereGeometry(.9,18,18),new THREE.MeshStandardMaterial({color:c[i%c.length],metalness:.9,roughness:.08}));scene.add(m);balls.push({m,n:n[i],p:i*.002,s:.0016+Math.random()*.0011,f:false,t:0})}}
-function loop(){requestAnimationFrame(loop);if(!renderer)return;if(running){balls.forEach(b=>{if(b.f)return;b.p+=b.s;if(b.p>=1){b.p=1;b.f=true;b.t=performance.now()-start;finish.push(b);if(finish.length===3)done()}b.m.position.copy(path.getPointAt(Math.min(b.p,.999)))});board()}let lead=[...balls].filter(b=>!b.f).sort((a,b)=>b.p-a.p)[0]||finish[0];if(lead){let p=lead.m.position;camera.position.x=THREE.MathUtils.lerp(camera.position.x,p.x+13,.05);camera.position.y=THREE.MathUtils.lerp(camera.position.y,p.y+9,.05);camera.position.z=THREE.MathUtils.lerp(camera.position.z,p.z+17,.05);camera.lookAt(p)}renderer.render(scene,camera)}
-function board(){let s=[...balls].sort((a,b)=>a.f&&b.f?a.t-b.t:a.f?-1:b.f?1:b.p-a.p);rows.innerHTML=s.slice(0,8).map((b,i)=>`<div class="row"><span>${i+1}</span><span class="dot" style="background:#${b.m.material.color.getHexString()}"></span><b>${b.n}</b><span style="color:var(--c)">${b.f?"FINISH":Math.round(b.p*100)+"%"}</span></div>`).join("")}
-function done(){running=false;let sec=(finish[0].t/1000).toFixed(2),key=zone[0]+"|"+track,record=!P.records[key]||+sec<+P.records[key];if(record)P.records[key]=sec;P.coins+=120;P.xp+=40;P.stars+=record?3:1;P.gems+=record?5:0;while(P.xp>=100){P.xp-=100;P.level++}save();render();places.innerHTML=finish.slice(0,3).map((b,i)=>`<div class="place"><div style="font-size:32px">${["🥇","🥈","🥉"][i]}</div><b>${b.n}</b><div>${(b.t/1000).toFixed(2)}s</div></div>`).join("");reward.innerHTML=`+120 moedas • +40 XP • +${record?3:1} estrelas ${record?"• +5 gemas<br><b>NOVO RECORDE!</b>":""}`;podium.classList.remove("hide")}
-function replay(){podium.classList.add("hide");spawn();start=performance.now();running=true}
+function startRace(){closePanel();race.classList.remove("hide");podium.classList.add("hide");raceTitle.textContent=zone[0]+" — "+track;init3D();spawn();start=performance.now();running=true;lastPlayerCP=0}
+function init3D(){
+ scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,3000);camera.position.set(0,35,58);
+ renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0,0);renderer.setSize(innerWidth,innerHeight);canvas.innerHTML="";canvas.appendChild(renderer.domElement);
+ scene.add(new THREE.AmbientLight(0xffffff,.72));let sun=new THREE.DirectionalLight(0xffb800,1.55);sun.position.set(30,60,20);scene.add(sun);
+ let pts=[
+  new THREE.Vector3(-55,30,-45),new THREE.Vector3(-35,24,-65),new THREE.Vector3(-5,18,-55),
+  new THREE.Vector3(20,26,-38),new THREE.Vector3(42,15,-18),new THREE.Vector3(58,10,8),
+  new THREE.Vector3(38,2,35),new THREE.Vector3(5,-8,48),new THREE.Vector3(-24,-3,40),
+  new THREE.Vector3(-48,8,20),new THREE.Vector3(-60,18,-5),new THREE.Vector3(-55,30,-45)
+ ];
+ path=new THREE.CatmullRomCurve3(pts,true,"catmullrom",.5);
+ let tube=new THREE.Mesh(new THREE.TubeGeometry(path,420,1.5,16,true),new THREE.MeshStandardMaterial({color:0xff5500,metalness:.65,roughness:.2}));
+ scene.add(tube);
+ for(let i=0;i<checkpoints;i++){
+   let p=path.getPointAt(i/checkpoints);
+   let ring=new THREE.Mesh(new THREE.TorusGeometry(3.3,.22,10,34),new THREE.MeshStandardMaterial({color:0x00dfd8,emissive:0x007777}));
+   ring.position.copy(p);ring.lookAt(path.getPointAt((i/checkpoints+.01)%1));scene.add(ring)
+ }
+ let floor=new THREE.Mesh(new THREE.CircleGeometry(150,64),new THREE.MeshStandardMaterial({color:0x14202d,roughness:.9}));
+ floor.rotation.x=-Math.PI/2;floor.position.y=-20;scene.add(floor)
+}
+function spawn(){
+ balls=[];finish=[];let n=["Turbo","Neon","Fénix","Vortex","Cometa","Nitro","Solar","Pixel","Blaze","Echo","Rocket","Nova"],c=[0x00dfd8,0xff5500,0xffb800,0x7928ca,0x00ff66,0xff0055];
+ for(let i=0;i<12;i++){let m=new THREE.Mesh(new THREE.SphereGeometry(1,20,20),new THREE.MeshStandardMaterial({color:c[i%c.length],metalness:.92,roughness:.07}));scene.add(m);balls.push({m,n:n[i],p:i*.0005,s:.000055+Math.random()*.000025,f:false,t:0,lap:1})}
+}
+function loop(){
+ requestAnimationFrame(loop);if(!renderer)return;
+ if(running){
+   let now=performance.now();timeHud.textContent=formatTime(now-start);
+   balls.forEach((b,idx)=>{
+     if(b.f)return;
+     b.p+=b.s;
+     let total=b.p;
+     b.lap=Math.floor(total)+1;
+     let local=total%1;
+     if(total>=laps){b.p=laps;b.f=true;b.t=performance.now()-start;finish.push(b);if(finish.length===3)done()}
+     b.m.position.copy(path.getPointAt(Math.min(local,.999)));
+     if(idx===0){
+       lapHud.textContent=Math.min(b.lap,laps)+"/"+laps;
+       let cp=Math.floor(local*checkpoints)+1;cpHud.textContent=cp+"/"+checkpoints;
+       let absoluteCP=Math.floor(total*checkpoints);
+       if(absoluteCP>lastPlayerCP){lastPlayerCP=absoluteCP;flashCP()}
+     }
+   });
+   board()
+ }
+ let lead=[...balls].filter(b=>!b.f).sort((a,b)=>b.p-a.p)[0]||finish[0];
+ if(lead){let p=lead.m.position;camera.position.x=THREE.MathUtils.lerp(camera.position.x,p.x+18,.045);camera.position.y=THREE.MathUtils.lerp(camera.position.y,p.y+12,.045);camera.position.z=THREE.MathUtils.lerp(camera.position.z,p.z+22,.045);camera.lookAt(p)}
+ renderer.render(scene,camera)
+}
+function board(){let s=[...balls].sort((a,b)=>a.f&&b.f?a.t-b.t:a.f?-1:b.f?1:b.p-a.p);rows.innerHTML=s.slice(0,8).map((b,i)=>`<div class="row"><span>${i+1}</span><span class="dot" style="background:#${b.m.material.color.getHexString()}"></span><b>${b.n}</b><span style="color:var(--c)">${b.f?"FINISH":"V"+Math.min(Math.floor(b.p)+1,laps)}</span></div>`).join("")}
+function flashCP(){checkpointMsg.style.opacity=1;setTimeout(()=>checkpointMsg.style.opacity=0,700)}
+function formatTime(ms){let s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
+function done(){
+ running=false;
+ let sec=(finish[0].t/1000).toFixed(2),key=zone[0]+"|"+track,record=!P.records[key]||+sec<+P.records[key];
+ if(record)P.records[key]=sec;P.coins+=300;P.xp+=80;P.stars+=record?5:2;P.gems+=record?10:0;
+ while(P.xp>=100){P.xp-=100;P.level++}
+ save();render();
+ places.innerHTML=finish.slice(0,3).map((b,i)=>`<div class="place"><div style="font-size:32px">${["🥇","🥈","🥉"][i]}</div><b>${b.n}</b><div>${(b.t/1000).toFixed(2)}s</div></div>`).join("");
+ reward.innerHTML=`+300 moedas • +80 XP • +${record?5:2} estrelas ${record?"• +10 gemas<br><b>NOVO RECORDE!</b>":""}`;
+ podium.classList.remove("hide")
+}
+function replay(){podium.classList.add("hide");spawn();start=performance.now();running=true;lastPlayerCP=0}
 function hub(){running=false;race.classList.add("hide");podium.classList.add("hide");render();hud()}
 render();hud();loop();
 </script>

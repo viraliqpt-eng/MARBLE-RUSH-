@@ -1,1 +1,10 @@
-World Hub V2: zonas desbloqueáveis, pistas jogáveis, pódio, XP, moedas, gemas, estrelas e recordes guardados no navegador.
+MARBLE RUSH™ World Hub V3 Long Tracks
+
+Novidades:
+- pistas muito mais longas
+- 3 voltas
+- 8 checkpoints
+- duração aproximada de 2 a 4 minutos
+- HUD de volta, checkpoint e tempo
+- recompensas maiores
+- recordes guardados no navegador
