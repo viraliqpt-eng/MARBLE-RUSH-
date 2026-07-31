@@ -1,4 +1,1 @@
-MARBLE RUSH™ World Hub
-
-Mapa interativo com 11 zonas, hotspots, missões, progresso, recursos, painel de zona e transição por portal.
-Abre index.html mantendo a pasta assets ao lado.
+World Hub V2: zonas desbloqueáveis, pistas jogáveis, pódio, XP, moedas, gemas, estrelas e recordes guardados no navegador.
