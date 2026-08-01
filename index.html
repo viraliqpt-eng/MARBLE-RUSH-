@@ -1,149 +1,2391 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MARBLE RUSH™ — World Hub V3 Long Tracks</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<style>
-:root{--o:#ff5a00;--y:#ffbd00;--c:#00dfd8;--p:rgba(8,12,20,.91);--b:rgba(255,255,255,.14)}
-*{box-sizing:border-box}.hide{display:none!important}body{margin:0;overflow:hidden;background:#07111b;color:white;font-family:Arial,sans-serif}
-#map{position:fixed;inset:0;background:url('assets/world-map.png') center/cover}
-header{position:fixed;z-index:10;inset:0 0 auto;padding:14px 18px;display:flex;justify-content:space-between;background:linear-gradient(#05080ee8,transparent)}
-.logo{font-size:26px;font-weight:1000}.logo span{color:var(--o)}.res{display:flex;gap:8px}.pill{padding:9px 12px;background:var(--p);border:1px solid var(--b);border-radius:14px;font-weight:900}
-.hot{position:absolute;transform:translate(-50%,-50%);z-index:8;background:#070b12e8;color:white;border:1px solid var(--b);border-radius:13px;padding:8px 11px;font-weight:900;cursor:pointer}.hot small{display:block;color:var(--y)}.hot.lock{opacity:.45}
-#profile{position:fixed;z-index:10;left:15px;bottom:15px;width:280px;padding:14px;background:var(--p);border:1px solid var(--b);border-radius:18px}.bar{height:8px;background:#252b39;border-radius:9px;overflow:hidden}.bar div{height:100%;background:linear-gradient(90deg,var(--o),var(--y))}
-#panel{position:fixed;z-index:20;right:-440px;top:0;bottom:0;width:min(430px,100%);padding:22px;background:#080c14f8;border-left:1px solid var(--b);transition:.35s;overflow:auto}#panel.open{right:0}
-.close{float:right;background:#ffffff16;color:white;border:1px solid var(--b);border-radius:10px;padding:8px 11px}
-.hero{height:210px;border-radius:18px;background:url('assets/world-map.png') center/cover;display:flex;align-items:end;padding:15px;font-size:29px;font-weight:1000;text-transform:uppercase}
-.track{margin-top:10px;padding:12px;background:#ffffff0d;border:1px solid var(--b);border-radius:13px}.track button{width:100%;margin-top:8px;border:0;border-radius:10px;padding:11px;background:linear-gradient(90deg,var(--o),var(--y));font-weight:1000}
-.meta{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}.tag{font-size:11px;padding:5px 8px;border-radius:8px;background:#ffffff0f;border:1px solid var(--b)}
-#portal{position:fixed;z-index:30;inset:0;display:none;place-items:center;background:#05070b}.ring{width:190px;height:190px;border:12px solid var(--c);border-radius:50%;box-shadow:0 0 65px var(--c),inset 0 0 45px var(--c);animation:s 1s linear infinite}@keyframes s{to{transform:rotate(360deg)}}#portal b{position:absolute;font-size:25px}
-#race{position:fixed;z-index:40;inset:0;background:#05070b}.bg{position:absolute;inset:0;background:url('assets/world-map.png') center/cover;filter:brightness(.28) saturate(1.2)}#canvas{position:absolute;inset:0}
-.top{position:absolute;z-index:4;inset:0 0 auto;padding:13px 16px;display:flex;justify-content:space-between;gap:10px;background:linear-gradient(#000d,transparent)}.top button{background:#ffffff16;color:white;border:1px solid var(--b);border-radius:10px;padding:8px 11px}
-.hud{display:flex;gap:9px;flex-wrap:wrap;justify-content:center}.hud span{padding:7px 10px;background:#09101ad9;border:1px solid var(--b);border-radius:10px;font-weight:900}
-#board{position:absolute;z-index:4;right:14px;top:76px;width:240px;padding:12px;background:var(--p);border:1px solid var(--b);border-radius:15px}.row{display:grid;grid-template-columns:22px 12px 1fr auto;gap:7px;padding:6px 0;border-top:1px solid #ffffff10;font-size:12px}.dot{width:10px;height:10px;border-radius:50%}
-#checkpointMsg{position:absolute;z-index:7;left:50%;top:22%;transform:translateX(-50%);padding:14px 22px;background:#08111ee8;border:1px solid #00dfd866;border-radius:15px;font-size:24px;font-weight:1000;opacity:0;transition:.25s}
-#podium{position:absolute;z-index:8;inset:0;display:grid;place-items:center;background:#000b}.card{width:min(650px,94%);padding:23px;text-align:center;background:#0e131df7;border:1px solid #ff5a0060;border-radius:22px}.places{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.place{padding:15px;background:#ffffff0e;border-radius:14px}.reward{margin:14px 0;padding:12px;background:#00dfd81a;border:1px solid #00dfd855;border-radius:13px}.actions{display:flex;gap:9px;justify-content:center}.actions button{border:0;border-radius:11px;padding:12px 15px;font-weight:1000}.primary{background:linear-gradient(90deg,var(--o),var(--y))}.secondary{background:#ffffff16;color:white}
-@media(max-width:700px){.res{display:none}.hot{font-size:10px;padding:6px 8px}#profile{width:210px}#board{width:200px}.places{grid-template-columns:1fr}.hud span:nth-child(4){display:none}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MARBLE RUSH™ — Modo Automático & Campeonato AAA</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- FontAwesome icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #080810;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            user-select: none;
+        }
+        #webgl-container {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .glass-panel {
+            background: rgba(13, 16, 27, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+        .glass-button {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-button:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-2px);
+        }
+        .glass-button.active {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.8), rgba(245, 158, 11, 0.8));
+            border-color: #f59e0b;
+            box-shadow: 0 0 15px rgba(245, 158, 11, 0.5);
+        }
+        .auto-mode-active {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.8), rgba(6, 182, 212, 0.8)) !important;
+            border-color: #10b981 !important;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.6) !important;
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.5); }
+            50% { box-shadow: 0 0 28px rgba(6, 182, 212, 0.8); }
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+        .speedometer-ring {
+            stroke-dasharray: 283;
+            transition: stroke-dashoffset 0.1s linear;
+        }
+        .race-chip {
+            background: rgba(5, 8, 18, 0.78);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+        }
+        .touch-control {
+            width: 54px;
+            height: 54px;
+            border-radius: 999px;
+            background: rgba(10, 14, 25, 0.72);
+            border: 1px solid rgba(255,255,255,.2);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 18px;
+            touch-action: none;
+        }
+        .touch-control:active { transform: scale(.94); background: rgba(245,158,11,.42); }
+        #race-message { text-shadow: 0 2px 18px rgba(0,0,0,.9); }
+
+        .screen-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background:
+                radial-gradient(circle at 20% 15%, rgba(245, 158, 11, .20), transparent 32%),
+                radial-gradient(circle at 82% 74%, rgba(124, 58, 237, .22), transparent 36%),
+                linear-gradient(145deg, rgba(3, 6, 18, .78), rgba(3, 6, 18, .94));
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .screen-overlay.hidden { display: none; }
+        .menu-card {
+            width: min(780px, 100%);
+            max-height: 94vh;
+            overflow-y: auto;
+            border-radius: 30px;
+            padding: clamp(22px, 4vw, 38px);
+            background: linear-gradient(145deg, rgba(14, 18, 33, .94), rgba(7, 10, 22, .90));
+            border: 1px solid rgba(255,255,255,.15);
+            box-shadow: 0 30px 100px rgba(0,0,0,.55), 0 0 60px rgba(245,158,11,.10);
+        }
+        .menu-choice {
+            border: 1px solid rgba(255,255,255,.14);
+            background: rgba(255,255,255,.055);
+            border-radius: 14px;
+            padding: 10px 12px;
+            font-size: 12px;
+            font-weight: 800;
+            transition: .2s ease;
+        }
+        .menu-choice:hover { transform: translateY(-2px); background: rgba(255,255,255,.11); }
+        .menu-choice.active {
+            border-color: rgba(251,191,36,.9);
+            background: linear-gradient(135deg, rgba(245,158,11,.33), rgba(239,68,68,.24));
+            box-shadow: 0 0 20px rgba(245,158,11,.17);
+        }
+        .primary-play {
+            background: linear-gradient(100deg, #f59e0b, #f97316, #ef4444);
+            box-shadow: 0 16px 45px rgba(249,115,22,.32);
+            transition: .2s ease;
+        }
+        .primary-play:hover { transform: translateY(-2px) scale(1.01); filter: brightness(1.08); }
+        .auto-play-badge {
+            background: linear-gradient(100deg, #10b981, #06b6d4, #3b82f6);
+            box-shadow: 0 12px 35px rgba(16,185,129,.35);
+        }
+        .countdown-number {
+            font-size: clamp(88px, 20vw, 210px);
+            line-height: .9;
+            font-weight: 1000;
+            letter-spacing: -.08em;
+            color: white;
+            text-shadow: 0 0 35px rgba(245,158,11,.8), 0 10px 70px rgba(0,0,0,.9);
+            animation: countdownPop .68s cubic-bezier(.2,.8,.2,1);
+        }
+        @keyframes countdownPop {
+            0% { opacity: 0; transform: scale(.35); }
+            40% { opacity: 1; transform: scale(1.12); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .loader-ring {
+            width: 52px; height: 52px; border-radius: 999px;
+            border: 4px solid rgba(255,255,255,.14); border-top-color: #f59e0b;
+            animation: spinLoader .8s linear infinite;
+        }
+        @keyframes spinLoader { to { transform: rotate(360deg); } }
+        .hud-time { min-width: 64px; display: inline-block; text-align: right; }
+        .career-stat {
+            border: 1px solid rgba(255,255,255,.12);
+            background: rgba(255,255,255,.045);
+            border-radius: 16px;
+            padding: 12px 14px;
+        }
+        .mode-choice {
+            border: 1px solid rgba(255,255,255,.14);
+            background: rgba(255,255,255,.055);
+            border-radius: 16px;
+            padding: 13px 15px;
+            text-align: left;
+            transition: .2s ease;
+        }
+        .mode-choice:hover { transform: translateY(-2px); border-color: rgba(245,158,11,.55); }
+        .mode-choice.active {
+            border-color: rgba(245,158,11,.92);
+            background: linear-gradient(135deg, rgba(245,158,11,.20), rgba(239,68,68,.13));
+            box-shadow: 0 0 24px rgba(245,158,11,.10);
+        }
+        .menu-choice.locked { opacity: .43; filter: grayscale(.72); cursor: not-allowed; position: relative; }
+        .menu-choice.locked::after {
+            content: "🔒";
+            position: absolute;
+            right: 7px;
+            top: 5px;
+            font-size: 11px;
+        }
+        .menu-choice.marble-locked::after { content: "🔐"; }
+        .track-stars { display:block; font-size:10px; color:#fbbf24; margin-top:4px; letter-spacing:1px; }
+        .championship-strip {
+            border: 1px solid rgba(34,211,238,.22);
+            background: linear-gradient(135deg, rgba(8,145,178,.10), rgba(124,58,237,.09));
+            border-radius: 16px;
+            padding: 12px 14px;
+        }
+        .career-progress { height: 7px; border-radius: 999px; overflow:hidden; background: rgba(255,255,255,.08); }
+        .career-progress > div { height:100%; border-radius:inherit; background: linear-gradient(90deg,#22d3ee,#f59e0b,#ef4444); transition: width .35s ease; }
+        .star-result { letter-spacing: .18em; text-shadow: 0 0 16px rgba(251,191,36,.42); }
+        @media (max-width: 767px) {
+            header h1 { font-size: 1.05rem !important; }
+            header p { display: none; }
+            .race-chip { gap: 6px !important; padding: 6px 8px !important; font-size: 9px !important; }
+            .race-chip strong { font-size: 11px !important; }
+            footer { transform: scale(.92); transform-origin: bottom right; }
+            .menu-card { border-radius: 22px; padding: 20px; }
+        }
+    </style>
 </head>
-<body>
-<div id="map"></div>
-<header><div class="logo">MARBLE RUSH<span>™</span> WORLD V3</div><div class="res"><div class="pill">⭐ <span id="stars">0</span></div><div class="pill">🪙 <span id="coins">0</span></div><div class="pill">💎 <span id="gems">0</span></div></div></header>
-<div id="spots"></div>
-<div id="profile"><b>PedroF — Nível <span id="level">1</span></b><div class="bar" style="margin-top:9px"><div id="xpbar"></div></div><small><span id="xp">0</span>/100 XP</small></div>
+<body class="text-white overflow-hidden select-none">
 
-<aside id="panel"><button class="close" onclick="closePanel()">✕</button><div class="hero" id="hero"></div><p id="desc"></p><div id="tracks"></div></aside>
-<div id="portal"><div class="ring"></div><b id="portalText">A ENTRAR...</b></div>
+    <!-- 3D Viewport -->
+    <div id="webgl-container"></div>
 
-<section id="race" class="hide">
-  <div class="bg"></div><div id="canvas"></div>
-  <div class="top">
-    <button onclick="hub()">← HUB</button>
-    <div class="hud">
-      <span id="raceTitle"></span>
-      <span>VOLTA <b id="lapHud">1/3</b></span>
-      <span>CHECKPOINT <b id="cpHud">1/8</b></span>
-      <span>TEMPO <b id="timeHud">00:00</b></span>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="screen-overlay">
+        <div class="text-center flex flex-col items-center gap-5">
+            <div class="loader-ring"></div>
+            <div>
+                <p class="text-2xl font-black tracking-widest text-amber-400">MARBLE RUSH™</p>
+                <p class="text-xs mt-2 text-slate-300 tracking-[.3em]">A CARREGAR MODO AUTOMÁTICO 3D</p>
+            </div>
+        </div>
     </div>
-  </div>
-  <aside id="board"><b>🏁 CLASSIFICAÇÃO</b><div id="rows"></div></aside>
-  <div id="checkpointMsg">CHECKPOINT!</div>
-  <div id="podium" class="hide"><div class="card"><div style="color:var(--c);font-weight:900">CORRIDA LONGA CONCLUÍDA</div><h1>PÓDIO</h1><div class="places" id="places"></div><div class="reward" id="reward"></div><div class="actions"><button class="primary" onclick="replay()">CORRER NOVAMENTE</button><button class="secondary" onclick="hub()">REGRESSAR AO MAPA</button></div></div></div>
-</section>
 
-<script>
-const Z=[
-["Praia Dourada",13,42,1,["Farol Veloz","Onda Gigante","Ponte do Sol"]],
-["Bairro Residencial",36,28,1,["Quintal Radical","Garagem Turbo","Piscina Azul"]],
-["Centro da Cidade",49,20,2,["Hora de Ponta","Metro Express","Telhados Urbanos"]],
-["Fábrica Mecânica",65,25,3,["Linha de Montagem","Prensa Máxima","Robot Run"]],
-["Monte Vulcão",85,32,5,["Lava Rush","Cratera Final","Rocha Infernal"]],
-["Restaurante",28,53,2,["Cozinha Crocante","Cascata de Cereais","Atalho da Torradeira"]],
-["Parque Verde",48,48,2,["Lago Esmeralda","Escorrega Turbo","Ponte Suspensa"]],
-["Laboratório",66,51,4,["Órbita Zero","Portal Azul","Laser Core"]],
-["Castelo dos Dragões",86,51,5,["Ponte do Dragão","Masmorra Rush","Torre de Fogo"]],
-["Aeroporto",20,76,3,["Pista 27","Hangar Turbo","Bagagem Perdida"]],
-["Porto Marítimo",76,77,4,["Container Run","Convés Molhado","Grua Secreta"]]
-];
-let P=JSON.parse(localStorage.getItem("mrHubV3")||'{"level":1,"xp":0,"coins":0,"gems":0,"stars":0,"records":{}}');
-let zone=null,track="",scene,camera,renderer,path,balls=[],running=false,start=0,finish=[],laps=3,checkpoints=8,lastPlayerCP=0;
+    <!-- Cinematic Start Menu -->
+    <div id="start-screen" class="screen-overlay hidden">
+        <section class="menu-card text-white">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <p class="text-[10px] font-black tracking-[.34em] text-emerald-400">MODO AUTOMÁTICO & CAMPEONATO AUTÓNOMO</p>
+                    <h2 class="text-4xl md:text-6xl font-black leading-none mt-2 bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-amber-400 to-red-500">MARBLE<br>RUSH™</h2>
+                    <p class="mt-3 max-w-lg text-sm text-slate-300">Relaxa e assiste às corridas no modo automático ou assume o controlo manual a qualquer momento!</p>
+                </div>
+                <div class="hidden sm:flex w-20 h-20 rounded-3xl bg-gradient-to-br from-emerald-400 via-amber-500 to-purple-700 items-center justify-center text-3xl font-black shadow-2xl">MR</div>
+            </div>
 
-function save(){localStorage.setItem("mrHubV3",JSON.stringify(P));hud()}
-function hud(){level.textContent=P.level;xp.textContent=P.xp;xpbar.style.width=P.xp+"%";coins.textContent=P.coins;gems.textContent=P.gems;stars.textContent=P.stars}
-function render(){spots.innerHTML=Z.map((z,i)=>`<button class="hot ${P.level<z[3]?"lock":""}" style="left:${z[1]}%;top:${z[2]}%" onclick="openZone(${i})">${P.level<z[3]?"🔒 ":""}${z[0]}<small>NÍVEL ${z[3]}+</small></button>`).join("")}
-function openZone(i){let z=Z[i];if(P.level<z[3])return;zone=z;hero.textContent=z[0];desc.textContent="Pistas longas com 3 voltas, 8 checkpoints e vários setores.";tracks.innerHTML=z[4].map(t=>{let k=z[0]+"|"+t;return `<div class="track"><b>${t}</b><div class="meta"><span class="tag">3 voltas</span><span class="tag">8 checkpoints</span><span class="tag">2–4 min</span><span class="tag">Pista longa</span></div><div style="font-size:12px;color:#aeb7c8">${P.records[k]?"Recorde: "+P.records[k]+"s":"Sem recorde"}</div><button onclick="enter('${t.replaceAll("'","")}')">JOGAR</button></div>`}).join("");panel.classList.add("open")}
-function closePanel(){panel.classList.remove("open")}
-function enter(t){track=t;portal.style.display="grid";portalText.textContent="A ENTRAR EM "+t;setTimeout(()=>{portal.style.display="none";startRace()},1100)}
+            <!-- Auto Mode Main Banner Switch -->
+            <div class="mt-4 p-3.5 rounded-2xl bg-gradient-to-r from-emerald-950/60 via-slate-900/80 to-cyan-950/60 border border-emerald-500/30 flex items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl shrink-0">
+                        <i class="fa-solid fa-robot animate-pulse"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xs font-bold text-emerald-300 uppercase tracking-wider">Piloto Automático (Hands-Free)</h3>
+                        <p class="text-[11px] text-slate-300">O berlinde conduz sozinho, evita obstáculos e usa turbo autonomamente.</p>
+                    </div>
+                </div>
+                <button id="btn-toggle-auto-menu" class="glass-button auto-mode-active px-4 py-2.5 rounded-xl text-xs font-bold text-white flex items-center gap-2 shrink-0">
+                    <i class="fa-solid fa-robot"></i>
+                    <span id="auto-menu-status">AUTOMÁTICO: ON</span>
+                </button>
+            </div>
 
-function startRace(){closePanel();race.classList.remove("hide");podium.classList.add("hide");raceTitle.textContent=zone[0]+" — "+track;init3D();spawn();start=performance.now();running=true;lastPlayerCP=0}
-function init3D(){
- scene=new THREE.Scene();camera=new THREE.PerspectiveCamera(58,innerWidth/innerHeight,.1,3000);camera.position.set(0,35,58);
- renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});renderer.setClearColor(0,0);renderer.setSize(innerWidth,innerHeight);canvas.innerHTML="";canvas.appendChild(renderer.domElement);
- scene.add(new THREE.AmbientLight(0xffffff,.72));let sun=new THREE.DirectionalLight(0xffb800,1.55);sun.position.set(30,60,20);scene.add(sun);
- let pts=[
-  new THREE.Vector3(-55,30,-45),new THREE.Vector3(-35,24,-65),new THREE.Vector3(-5,18,-55),
-  new THREE.Vector3(20,26,-38),new THREE.Vector3(42,15,-18),new THREE.Vector3(58,10,8),
-  new THREE.Vector3(38,2,35),new THREE.Vector3(5,-8,48),new THREE.Vector3(-24,-3,40),
-  new THREE.Vector3(-48,8,20),new THREE.Vector3(-60,18,-5),new THREE.Vector3(-55,30,-45)
- ];
- path=new THREE.CatmullRomCurve3(pts,true,"catmullrom",.5);
- let tube=new THREE.Mesh(new THREE.TubeGeometry(path,420,1.5,16,true),new THREE.MeshStandardMaterial({color:0xff5500,metalness:.65,roughness:.2}));
- scene.add(tube);
- for(let i=0;i<checkpoints;i++){
-   let p=path.getPointAt(i/checkpoints);
-   let ring=new THREE.Mesh(new THREE.TorusGeometry(3.3,.22,10,34),new THREE.MeshStandardMaterial({color:0x00dfd8,emissive:0x007777}));
-   ring.position.copy(p);ring.lookAt(path.getPointAt((i/checkpoints+.01)%1));scene.add(ring)
- }
- let floor=new THREE.Mesh(new THREE.CircleGeometry(150,64),new THREE.MeshStandardMaterial({color:0x14202d,roughness:.9}));
- floor.rotation.x=-Math.PI/2;floor.position.y=-20;scene.add(floor)
-}
-function spawn(){
- balls=[];finish=[];let n=["Turbo","Neon","Fénix","Vortex","Cometa","Nitro","Solar","Pixel","Blaze","Echo","Rocket","Nova"],c=[0x00dfd8,0xff5500,0xffb800,0x7928ca,0x00ff66,0xff0055];
- for(let i=0;i<12;i++){let m=new THREE.Mesh(new THREE.SphereGeometry(1,20,20),new THREE.MeshStandardMaterial({color:c[i%c.length],metalness:.92,roughness:.07}));scene.add(m);balls.push({m,n:n[i],p:i*.0005,s:.000055+Math.random()*.000025,f:false,t:0,lap:1})}
-}
-function loop(){
- requestAnimationFrame(loop);if(!renderer)return;
- if(running){
-   let now=performance.now();timeHud.textContent=formatTime(now-start);
-   balls.forEach((b,idx)=>{
-     if(b.f)return;
-     b.p+=b.s;
-     let total=b.p;
-     b.lap=Math.floor(total)+1;
-     let local=total%1;
-     if(total>=laps){b.p=laps;b.f=true;b.t=performance.now()-start;finish.push(b);if(finish.length===3)done()}
-     b.m.position.copy(path.getPointAt(Math.min(local,.999)));
-     if(idx===0){
-       lapHud.textContent=Math.min(b.lap,laps)+"/"+laps;
-       let cp=Math.floor(local*checkpoints)+1;cpHud.textContent=cp+"/"+checkpoints;
-       let absoluteCP=Math.floor(total*checkpoints);
-       if(absoluteCP>lastPlayerCP){lastPlayerCP=absoluteCP;flashCP()}
-     }
-   });
-   board()
- }
- let lead=[...balls].filter(b=>!b.f).sort((a,b)=>b.p-a.p)[0]||finish[0];
- if(lead){let p=lead.m.position;camera.position.x=THREE.MathUtils.lerp(camera.position.x,p.x+18,.045);camera.position.y=THREE.MathUtils.lerp(camera.position.y,p.y+12,.045);camera.position.z=THREE.MathUtils.lerp(camera.position.z,p.z+22,.045);camera.lookAt(p)}
- renderer.render(scene,camera)
-}
-function board(){let s=[...balls].sort((a,b)=>a.f&&b.f?a.t-b.t:a.f?-1:b.f?1:b.p-a.p);rows.innerHTML=s.slice(0,8).map((b,i)=>`<div class="row"><span>${i+1}</span><span class="dot" style="background:#${b.m.material.color.getHexString()}"></span><b>${b.n}</b><span style="color:var(--c)">${b.f?"FINISH":"V"+Math.min(Math.floor(b.p)+1,laps)}</span></div>`).join("")}
-function flashCP(){checkpointMsg.style.opacity=1;setTimeout(()=>checkpointMsg.style.opacity=0,700)}
-function formatTime(ms){let s=Math.floor(ms/1000),m=Math.floor(s/60);return String(m).padStart(2,"0")+":"+String(s%60).padStart(2,"0")}
-function done(){
- running=false;
- let sec=(finish[0].t/1000).toFixed(2),key=zone[0]+"|"+track,record=!P.records[key]||+sec<+P.records[key];
- if(record)P.records[key]=sec;P.coins+=300;P.xp+=80;P.stars+=record?5:2;P.gems+=record?10:0;
- while(P.xp>=100){P.xp-=100;P.level++}
- save();render();
- places.innerHTML=finish.slice(0,3).map((b,i)=>`<div class="place"><div style="font-size:32px">${["🥇","🥈","🥉"][i]}</div><b>${b.n}</b><div>${(b.t/1000).toFixed(2)}s</div></div>`).join("");
- reward.innerHTML=`+300 moedas • +80 XP • +${record?5:2} estrelas ${record?"• +10 gemas<br><b>NOVO RECORDE!</b>":""}`;
- podium.classList.remove("hide")
-}
-function replay(){podium.classList.add("hide");spawn();start=performance.now();running=true;lastPlayerCP=0}
-function hub(){running=false;race.classList.add("hide");podium.classList.add("hide");render();hud()}
-render();hud();loop();
-</script>
+            <div class="mt-5 grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <div class="career-stat"><p class="text-[9px] tracking-wider text-slate-400">NÍVEL</p><strong id="career-level" class="text-xl text-cyan-300">1</strong></div>
+                <div class="career-stat"><p class="text-[9px] tracking-wider text-slate-400">ESTRELAS</p><strong id="career-stars" class="text-xl text-amber-300">0/12</strong></div>
+                <div class="career-stat"><p class="text-[9px] tracking-wider text-slate-400">MOEDAS</p><strong id="career-coins" class="text-xl text-yellow-300">0</strong></div>
+                <div class="career-stat"><p class="text-[9px] tracking-wider text-slate-400">TÍTULOS</p><strong id="career-crowns" class="text-xl text-violet-300">0</strong></div>
+            </div>
+
+            <div class="mt-5">
+                <p class="text-[10px] font-black tracking-[.24em] text-slate-400 mb-3">MODO DE JOGO</p>
+                <div class="grid sm:grid-cols-2 gap-2">
+                    <button class="mode-choice mode-btn active" data-mode="quick"><strong class="block text-sm">⚡ CORRIDA RÁPIDA</strong><span class="text-[11px] text-slate-400">Escolhe qualquer circuito desbloqueado.</span></button>
+                    <button class="mode-choice mode-btn" data-mode="championship"><strong class="block text-sm">🏆 CAMPEONATO AUTÓNOMO</strong><span class="text-[11px] text-slate-400">4 provas automáticas consecutivas com pontos.</span></button>
+                </div>
+                <div class="championship-strip mt-3">
+                    <div class="flex items-center justify-between gap-3 text-xs"><span id="career-rank" class="font-bold text-cyan-300">NOVATO</span><span id="career-next-level" class="text-slate-400">Próximo nível: 3 estrelas</span></div>
+                    <div class="career-progress mt-2"><div id="career-progress-bar" style="width:0%"></div></div>
+                    <p id="mode-description" class="text-[11px] text-slate-400 mt-2">Corrida rápida: escolhe um circuito e tenta melhorar estrelas, tempo e pontuação.</p>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <p class="text-[10px] font-black tracking-[.24em] text-slate-400 mb-3">ESCOLHER CIRCUITO</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                    <button class="menu-choice menu-env-btn active" data-env="volcano">🌋 Vulcão<span id="track-stars-volcano" class="track-stars">☆☆☆</span></button>
+                    <button class="menu-choice menu-env-btn" data-env="ice">❄️ Glaciar<span id="track-stars-ice" class="track-stars">☆☆☆</span></button>
+                    <button class="menu-choice menu-env-btn" data-env="space">🚀 Espaço<span id="track-stars-space" class="track-stars">☆☆☆</span></button>
+                    <button class="menu-choice menu-env-btn" data-env="portugal">🇵🇹 Lisboa<span id="track-stars-portugal" class="track-stars">☆☆☆</span></button>
+                </div>
+                <p id="menu-lock-message" class="min-h-[18px] mt-2 text-[11px] text-amber-300"></p>
+            </div>
+
+            <div class="mt-5">
+                <p class="text-[10px] font-black tracking-[.24em] text-slate-400 mb-3">ESCOLHER BERLINDE</p>
+                <div class="grid grid-cols-3 md:grid-cols-6 gap-2">
+                    <button class="menu-choice menu-marble-btn active" data-material="lava">🔥 Lava</button>
+                    <button class="menu-choice menu-marble-btn" data-material="cristal">💎 Cristal</button>
+                    <button class="menu-choice menu-marble-btn" data-material="energia">⚡ Energia</button>
+                    <button class="menu-choice menu-marble-btn" data-material="galaxie">🌌 Galáxia</button>
+                    <button class="menu-choice menu-marble-btn" data-material="ouro">🥇 Ouro</button>
+                    <button class="menu-choice menu-marble-btn" data-material="arcoiris">🌈 Arco-Íris</button>
+                </div>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="text-xs text-slate-400">
+                    <p><span class="text-white font-bold">Modo Automático:</span> Condução, turbo e desvio inteligentes ativos.</p>
+                    <p class="mt-1">Melhor tempo: <strong id="menu-best-time" class="text-amber-300">--:--.---</strong> · Melhor pontuação: <strong id="menu-best-score" class="text-cyan-300">0</strong></p>
+                    <p id="championship-summary" class="mt-1 text-violet-300">Campeonato: 0 títulos · 0 vitórias</p>
+                </div>
+                <button id="btn-start-race" class="primary-play rounded-2xl px-8 py-4 text-sm font-black tracking-[.18em] text-white shrink-0"><i class="fa-solid fa-play mr-2"></i> <span id="start-button-label">INICIAR CORRIDA</span></button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Countdown -->
+    <div id="countdown-screen" class="fixed inset-0 z-[120] hidden items-center justify-center pointer-events-none bg-black/25 backdrop-blur-[2px]">
+        <div id="countdown-number" class="countdown-number">3</div>
+    </div>
+
+    <!-- Finish Screen -->
+    <div id="finish-screen" class="screen-overlay hidden">
+        <section class="menu-card max-w-xl text-center">
+            <p id="finish-kicker" class="text-[10px] font-black tracking-[.34em] text-amber-400">CORRIDA CONCLUÍDA</p>
+            <h2 id="finish-title" class="text-4xl md:text-6xl font-black mt-3">🏆 VITÓRIA!</h2>
+            <p id="finish-subtitle" class="mt-3 text-sm text-slate-300">Dominaste o circuito do MARBLE RUSH™.</p>
+            
+            <div id="auto-continue-banner" class="mt-4 p-3 rounded-2xl bg-emerald-950/70 border border-emerald-500/40 text-emerald-300 text-xs font-bold flex items-center justify-center gap-2">
+                <i class="fa-solid fa-robot animate-spin"></i>
+                <span>PRÓXIMA CORRIDA AUTOMÁTICA EM <strong id="auto-continue-timer" class="text-white text-sm">3</strong> SEGUNDOS...</span>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-5">
+                <div class="race-chip rounded-2xl p-3"><p class="text-[9px] text-slate-400">POSIÇÃO</p><strong id="finish-position" class="text-2xl">1/4</strong></div>
+                <div class="race-chip rounded-2xl p-3"><p class="text-[9px] text-slate-400">TEMPO</p><strong id="finish-time" class="text-lg text-amber-300">00:00.000</strong></div>
+                <div class="race-chip rounded-2xl p-3"><p class="text-[9px] text-slate-400">RECORDE</p><strong id="finish-best" class="text-lg text-cyan-300">--:--.---</strong></div>
+                <div class="race-chip rounded-2xl p-3"><p class="text-[9px] text-slate-400">PONTUAÇÃO</p><strong id="finish-score" class="text-lg text-violet-300">0</strong></div>
+                <div class="race-chip rounded-2xl p-3"><p class="text-[9px] text-slate-400">ESTRELAS</p><strong id="finish-stars" class="star-result text-xl text-amber-300">☆☆☆</strong></div>
+                <div class="race-chip rounded-2xl p-3"><p class="text-[9px] text-slate-400">PRÉMIO</p><strong id="finish-reward" class="text-lg text-yellow-300">+0 🪙</strong></div>
+            </div>
+            <p id="finish-championship" class="mt-4 text-xs font-bold text-cyan-300 hidden"></p>
+            <div class="mt-6 flex flex-col sm:flex-row justify-center gap-3">
+                <button id="btn-next-round" class="primary-play rounded-2xl px-7 py-4 text-sm font-black hidden"><i class="fa-solid fa-forward mr-2"></i> PRÓXIMA PROVA</button>
+                <button id="btn-race-again" class="primary-play rounded-2xl px-7 py-4 text-sm font-black"><i class="fa-solid fa-rotate-right mr-2"></i> JOGAR NOVAMENTE</button>
+                <button id="btn-main-menu" class="glass-button rounded-2xl px-7 py-4 text-sm font-bold"><i class="fa-solid fa-house mr-2"></i> MENU PRINCIPAL</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Pause Screen -->
+    <div id="pause-screen" class="screen-overlay hidden">
+        <section class="menu-card max-w-md text-center">
+            <p class="text-[10px] font-black tracking-[.34em] text-cyan-300">CORRIDA EM PAUSA</p>
+            <h2 class="text-4xl md:text-5xl font-black mt-3">⏸ PAUSA</h2>
+            <p class="mt-3 text-sm text-slate-300">A pista ficou congelada. Retoma quando estiveres preparado.</p>
+            <div class="mt-7 flex flex-col gap-3">
+                <button id="btn-resume-race" class="primary-play rounded-2xl px-7 py-4 text-sm font-black"><i class="fa-solid fa-play mr-2"></i> CONTINUAR</button>
+                <button id="btn-pause-restart" class="glass-button rounded-2xl px-7 py-4 text-sm font-bold"><i class="fa-solid fa-rotate-right mr-2"></i> REINICIAR CORRIDA</button>
+                <button id="btn-pause-menu" class="glass-button rounded-2xl px-7 py-4 text-sm font-bold"><i class="fa-solid fa-house mr-2"></i> MENU PRINCIPAL</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- HUD Overlay -->
+    <div id="game-ui" class="relative z-10 w-full h-screen pointer-events-none flex flex-col justify-between p-4 md:p-6">
+
+        <!-- Top Header Navigation & Status -->
+        <header class="flex justify-between items-center pointer-events-auto">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-500 via-amber-500 to-purple-600 flex items-center justify-center font-black text-xl shadow-lg shadow-emerald-500/30 border border-emerald-300/40">
+                    MR
+                </div>
+                <div>
+                    <h1 class="text-2xl font-black tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-amber-400 to-red-500">
+                        MARBLE RUSH<span class="text-xs align-super text-emerald-400 font-normal">™ AUTO</span>
+                    </h1>
+                    <p class="text-xs text-slate-400 tracking-wider">MODO AUTOMÁTICO & CAMPEONATO · HANDS-FREE</p>
+                </div>
+            </div>
+
+            <!-- Global Quick Stats & Weather Badge -->
+            <div class="hidden md:flex items-center gap-4 glass-panel px-4 py-2 rounded-2xl border border-white/10 text-xs">
+                <div class="flex items-center gap-2 text-amber-400">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>FPS: <strong id="fps-counter" class="text-white">60</strong></span>
+                </div>
+                <div class="h-4 w-[1px] bg-white/20"></div>
+                <div class="flex items-center gap-2 text-blue-400">
+                    <i class="fa-solid fa-cloud-sun-rain" id="weather-icon"></i>
+                    <span id="environment-label" class="text-white">Vulcão em Erupção</span>
+                </div>
+                <div class="h-4 w-[1px] bg-white/20"></div>
+                <div class="flex items-center gap-2 text-emerald-400">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>Piloto: <strong id="hud-autopilot-state" class="text-emerald-300">AUTOMÁTICO</strong></span>
+                </div>
+            </div>
+
+            <!-- Quick Toggles -->
+            <div class="flex items-center gap-2">
+                <button id="btn-toggle-autopilot" class="glass-button auto-mode-active px-3 h-10 rounded-xl flex items-center gap-2 text-xs font-bold text-white transition-all duration-300">
+                    <i class="fa-solid fa-robot" id="autopilot-icon"></i>
+                    <span id="autopilot-btn-text">AUTO: ON</span>
+                </button>
+                <button id="btn-audio" class="glass-button w-10 h-10 rounded-xl flex items-center justify-center text-slate-200" title="Ativar/Desativar Som">
+                    <i class="fa-solid fa-volume-high" id="audio-icon"></i>
+                </button>
+                <button id="btn-announcer" class="glass-button px-3 h-10 rounded-xl flex items-center gap-2 text-xs font-semibold text-amber-300 border border-amber-500/30 transition-all duration-300">
+                    <i class="fa-solid fa-microphone-lines" id="announcer-icon"></i>
+                    <span class="hidden sm:inline" id="announcer-btn-text">Comentador IA</span>
+                </button>
+                <button id="btn-cam" class="glass-button px-3 h-10 rounded-xl flex items-center gap-2 text-xs font-semibold text-slate-200">
+                    <i class="fa-solid fa-video"></i>
+                    <span class="hidden sm:inline" id="cam-mode-text">Câmara: Seguir</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Subtitle Toast Notification for AI Announcer -->
+        <div id="announcer-toast" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 glass-panel px-6 py-3 rounded-2xl border border-amber-500/40 shadow-xl shadow-amber-500/10 flex items-center gap-3 max-w-lg w-11/12 text-center transition-all duration-500 opacity-0 pointer-events-none transform -translate-y-4">
+            <div class="p-2 rounded-xl bg-amber-500/20 text-amber-400 shrink-0">
+                <i class="fa-solid fa-bullhorn text-lg animate-pulse"></i>
+            </div>
+            <div class="text-left">
+                <p class="text-[10px] text-amber-400 font-bold uppercase tracking-wider">Comentador Desportivo IA</p>
+                <p id="announcer-toast-text" class="text-xs md:text-sm font-semibold text-white leading-snug"></p>
+            </div>
+        </div>
+
+        <!-- Center Prompt Modal (AI Track Generator) -->
+        <div id="ai-modal" class="self-center my-auto w-full max-w-xl glass-panel p-6 rounded-3xl pointer-events-auto border border-amber-500/30 shadow-2xl shadow-amber-500/10 transition-all duration-300 hidden max-h-[90vh] overflow-y-auto z-50">
+            <div class="flex justify-between items-center mb-3">
+                <div class="flex items-center gap-2">
+                    <div class="p-2 rounded-lg bg-amber-500/20 text-amber-400">
+                        <i class="fa-solid fa-wand-magic-sparkles text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-white">Criador de Pistas Gemini 3.0</h3>
+                        <p class="text-[10px] text-amber-400 font-mono">POWERED BY GEMINI FLASH & IMAGEN API</p>
+                    </div>
+                </div>
+                <button id="btn-close-ai" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 mb-3">
+                Descreva a pista dos seus sonhos. O Gemini gera a geometria 3D e o comentário desportivo, jogável em modo manual ou automático.
+            </p>
+            <div class="relative mb-3">
+                <input type="text" id="ai-prompt-input" placeholder="Ex: Uma fábrica de chocolate futurista com cascatas de cacau e tubos de néon..." 
+                    class="w-full bg-black/60 border border-white/20 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-amber-400 pr-28">
+                <button id="btn-generate-track" class="absolute right-1 top-1 bottom-1 px-4 bg-gradient-to-r from-amber-500 to-orange-600 rounded-lg text-xs font-bold hover:brightness-110 transition flex items-center gap-1">
+                    <i class="fa-solid fa-bolt"></i> Criar com IA
+                </button>
+            </div>
+
+            <!-- AI Status Container -->
+            <div id="ai-status-container" class="hidden mb-3 p-3 bg-black/40 rounded-xl border border-white/10 text-xs text-slate-300">
+                <div class="flex items-center gap-2 mb-2">
+                    <div class="w-3 h-3 border-2 border-amber-400 border-t-transparent rounded-full animate-spin" id="ai-spinner"></div>
+                    <span id="ai-status-text" class="font-semibold text-amber-300">Gemini a calcular curvatura 3D...</span>
+                </div>
+                <div id="concept-art-wrapper" class="relative rounded-lg overflow-hidden border border-amber-500/30 hidden">
+                    <img id="concept-art-img" class="w-full h-36 object-cover" alt="Arte Concetual da Pista">
+                    <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 to-transparent p-2 text-[10px] text-amber-300 font-bold flex justify-between items-center">
+                        <span><i class="fa-solid fa-image"></i> Concept Art em Tempo Real</span>
+                        <span id="ai-track-title-badge" class="bg-amber-500/30 px-2 py-0.5 rounded text-white"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 text-[11px] text-slate-400">
+                <span class="text-slate-500">Sugestões:</span>
+                <button class="prompt-chip bg-white/5 hover:bg-white/10 px-2 py-1 rounded-md text-slate-300 border border-white/10">
+                    🍫 Fábrica de chocolate com tubos de néon
+                </button>
+                <button class="prompt-chip bg-white/5 hover:bg-white/10 px-2 py-1 rounded-md text-slate-300 border border-white/10">
+                    🌋 Vulcão com cascatas de magma e tubos de plasma
+                </button>
+                <button class="prompt-chip bg-white/5 hover:bg-white/10 px-2 py-1 rounded-md text-slate-300 border border-white/10">
+                    🇵🇹 Circuito de Lisboa com calçada de ouro
+                </button>
+            </div>
+        </div>
+
+        <!-- AI Engineer Modal -->
+        <div id="engineer-modal" class="fixed right-4 top-20 bottom-24 w-80 md:w-96 glass-panel rounded-3xl p-4 pointer-events-auto border border-blue-500/30 shadow-2xl flex flex-col z-50 hidden">
+            <div class="flex justify-between items-center pb-3 border-b border-white/10 mb-3">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-sm font-bold text-white">Engenheiro de Berlindes IA</h4>
+                        <p class="text-[10px] text-blue-300">Gemini 3.1 Specialist</p>
+                    </div>
+                </div>
+                <button id="btn-close-engineer" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="engineer-chat-log" class="flex-1 overflow-y-auto space-y-3 pr-1 text-xs text-slate-200">
+                <div class="bg-blue-950/40 border border-blue-500/20 p-2.5 rounded-xl">
+                    👋 Olá! Sou o teu Engenheiro de Pistas. No **Modo Automático**, utilizo robótica para otimizar trajetórias e consumo de turbo!
+                </div>
+            </div>
+
+            <div class="pt-3 border-t border-white/10 mt-2 flex flex-col gap-2">
+                <div class="relative">
+                    <input type="text" id="engineer-input" placeholder="Pergunta ao Engenheiro IA..." 
+                        class="w-full bg-black/60 border border-white/20 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-blue-400 pr-16">
+                    <button id="btn-send-engineer" class="absolute right-1 top-1 bottom-1 px-3 bg-blue-600 rounded-lg text-xs font-bold hover:bg-blue-500 transition">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Playable Race HUD -->
+        <div class="fixed top-20 left-1/2 -translate-x-1/2 z-20 pointer-events-none flex flex-col items-center gap-2">
+            <div class="race-chip rounded-2xl px-3 py-2 flex items-center gap-3 text-xs">
+                <span class="text-slate-400">POSIÇÃO <strong id="race-position" class="text-white text-base ml-1">1/4</strong></span>
+                <span class="w-px h-5 bg-white/15"></span>
+                <span class="text-slate-400">VOLTA <strong id="race-lap" class="text-amber-300 text-base ml-1">1/3</strong></span>
+                <span class="w-px h-5 bg-white/15"></span>
+                <span class="text-slate-400">CHECKPOINT <strong id="race-checkpoint" class="text-cyan-300 text-base ml-1">0/3</strong></span>
+                <span class="w-px h-5 bg-white/15"></span>
+                <span class="text-slate-400">TEMPO <strong id="race-time" class="hud-time text-emerald-300 text-base ml-1">00:00.000</strong></span>
+            </div>
+            <div class="race-chip rounded-2xl px-3 py-2 flex items-center gap-3 text-xs pointer-events-auto">
+                <span id="race-mode-label" class="text-cyan-300 font-bold">CORRIDA RÁPIDA</span>
+                <span class="w-px h-5 bg-white/15"></span>
+                <span class="text-slate-400">PONTOS <strong id="race-score" class="text-violet-300 text-base ml-1">0</strong></span>
+                <span class="w-px h-5 bg-white/15"></span>
+                <span class="text-slate-400">ENERGIA <strong id="race-orbs" class="text-cyan-300 text-base ml-1">0/24</strong></span>
+                <span class="w-px h-5 bg-white/15"></span>
+                <div class="flex items-center gap-2 min-w-[130px]">
+                    <span class="text-slate-400">TURBO</span>
+                    <div class="h-2 flex-1 rounded-full bg-white/10 overflow-hidden border border-white/10">
+                        <div id="turbo-energy-bar" class="h-full bg-gradient-to-r from-cyan-400 via-amber-400 to-orange-500 transition-all duration-150" style="width:100%"></div>
+                    </div>
+                    <strong id="turbo-energy-text" class="text-amber-300">100%</strong>
+                </div>
+                <button id="btn-pause" class="glass-button w-8 h-8 rounded-lg flex items-center justify-center" title="Pausa"><i class="fa-solid fa-pause"></i></button>
+            </div>
+            <div id="race-message" class="text-center text-sm font-black tracking-wider text-white transition-opacity duration-300">
+                🤖 PILOTO AUTOMÁTICO ATIVO — O BERLINDE CONDUZ SOZINHO
+            </div>
+        </div>
+
+        <!-- Touch controls -->
+        <div id="manual-touch-controls" class="fixed left-4 bottom-28 z-30 pointer-events-auto flex gap-2 md:hidden hidden">
+            <button id="touch-left" class="touch-control" aria-label="Virar à esquerda"><i class="fa-solid fa-arrow-left"></i></button>
+            <button id="touch-right" class="touch-control" aria-label="Virar à direita"><i class="fa-solid fa-arrow-right"></i></button>
+        </div>
+        <div id="manual-touch-boost" class="fixed right-4 bottom-28 z-30 pointer-events-auto md:hidden hidden">
+            <button id="touch-boost" class="touch-control text-amber-300" aria-label="Turbo"><i class="fa-solid fa-bolt"></i></button>
+        </div>
+
+        <!-- HUD Bottom Bar -->
+        <footer class="flex flex-col md:flex-row items-end md:items-center justify-between gap-4 pointer-events-auto w-full">
+            
+            <!-- Speedometer & Controls -->
+            <div class="glass-panel p-3 rounded-2xl flex items-center gap-4 border border-white/10 min-w-[200px]">
+                <div class="relative w-16 h-16 flex items-center justify-center">
+                    <svg class="w-16 h-16 transform -rotate-90">
+                        <circle cx="32" cy="32" r="26" stroke="currentColor" stroke-width="4" class="text-white/10" fill="transparent" />
+                        <circle id="speed-meter" cx="32" cy="32" r="26" stroke="currentColor" stroke-width="4" class="text-emerald-400 speedometer-ring" fill="transparent" stroke-dashoffset="200" />
+                    </svg>
+                    <div class="absolute flex flex-col items-center">
+                        <span id="speed-value" class="text-lg font-black leading-none">0</span>
+                        <span class="text-[9px] text-slate-400 uppercase">km/h</span>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-1">
+                    <button id="btn-restart" class="glass-button px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 text-amber-300">
+                        <i class="fa-solid fa-rotate-right"></i> Lançar Berlinde
+                    </button>
+                    <button id="btn-boost" class="glass-button px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 text-orange-400">
+                        <i class="fa-solid fa-fire-flame-curved"></i> Turbo Boost
+                    </button>
+                </div>
+            </div>
+
+            <!-- Customization Selectors -->
+            <div class="glass-panel p-2 rounded-2xl flex items-center gap-2 border border-white/10 overflow-x-auto max-w-full">
+                <div class="flex items-center gap-1 bg-black/40 p-1 rounded-xl">
+                    <button class="marble-btn glass-button active px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5" data-material="lava">🔥 Lava</button>
+                    <button class="marble-btn glass-button px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5" data-material="cristal">💎 Cristal</button>
+                    <button class="marble-btn glass-button px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5" data-material="energia">⚡ Energia</button>
+                    <button class="marble-btn glass-button px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5" data-material="galaxie">🌌 Galáxia</button>
+                    <button class="marble-btn glass-button px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5" data-material="ouro">🥇 Ouro</button>
+                    <button class="marble-btn glass-button px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5" data-material="arcoiris">🌈 Arco-Íris</button>
+                </div>
+
+                <div class="h-6 w-[1px] bg-white/20"></div>
+
+                <div class="flex items-center gap-1 bg-black/40 p-1 rounded-xl">
+                    <button class="env-btn glass-button active px-3 py-1.5 rounded-lg text-xs font-semibold" data-env="volcano">🌋 Vulcão</button>
+                    <button class="env-btn glass-button px-3 py-1.5 rounded-lg text-xs font-semibold" data-env="ice">❄️ Gelado</button>
+                    <button class="env-btn glass-button px-3 py-1.5 rounded-lg text-xs font-semibold" data-env="space">🚀 Espaço</button>
+                    <button class="env-btn glass-button px-3 py-1.5 rounded-lg text-xs font-semibold" data-env="portugal">🇵🇹 Portugal</button>
+                </div>
+            </div>
+
+            <!-- Right Tools -->
+            <div class="flex items-center gap-2">
+                <button id="btn-open-engineer" class="glass-button px-3 py-3 rounded-2xl flex items-center gap-2 text-xs font-bold bg-gradient-to-r from-blue-500/20 to-indigo-500/20 border border-blue-500/40 text-blue-300">
+                    <i class="fa-solid fa-robot"></i>
+                    <span class="hidden sm:inline">Engenheiro IA</span>
+                </button>
+                <button id="btn-open-ai" class="glass-button px-4 py-3 rounded-2xl flex items-center gap-2 text-xs font-bold bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/40 text-amber-300">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    <span>IA Track Builder</span>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- SOUND ENGINE ---
+        class SoundEngine {
+            constructor() {
+                this.ctx = null;
+                this.enabled = false;
+                this.rollOsc = null;
+                this.rollGain = null;
+                this.currentAudioElem = null;
+            }
+
+            init() {
+                if (this.ctx) {
+                    if (this.ctx.state === 'suspended') {
+                        this.ctx.resume();
+                    }
+                    return;
+                }
+                try {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AudioCtx();
+                    this.enabled = true;
+                    this.setupRollSynth();
+                } catch (e) {
+                    console.log("Audio API não suportado");
+                }
+            }
+
+            setupRollSynth() {
+                if (!this.ctx) return;
+                const bufferSize = this.ctx.sampleRate * 2;
+                const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+                const output = noiseBuffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    output[i] = Math.random() * 2 - 1;
+                }
+
+                const whiteNoise = this.ctx.createBufferSource();
+                whiteNoise.buffer = noiseBuffer;
+                whiteNoise.loop = true;
+
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'bandpass';
+                filter.frequency.value = 400;
+                filter.Q.value = 3.0;
+
+                this.rollGain = this.ctx.createGain();
+                this.rollGain.gain.value = 0;
+
+                whiteNoise.connect(filter);
+                filter.connect(this.rollGain);
+                this.rollGain.connect(this.ctx.destination);
+
+                whiteNoise.start();
+            }
+
+            updateRollSound(speed) {
+                if (!this.enabled || !this.rollGain) return;
+                const normalizedSpeed = Math.min(speed / 80, 1);
+                this.rollGain.gain.setTargetAtTime(normalizedSpeed * 0.15, this.ctx.currentTime, 0.05);
+            }
+
+            playImpact(volume = 0.5) {
+                if (!this.enabled || !this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(180, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(40, this.ctx.currentTime + 0.1);
+
+                gain.gain.setValueAtTime(volume * 0.4, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.1);
+            }
+
+            playBoost() {
+                if (!this.enabled || !this.ctx) return;
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(300, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, this.ctx.currentTime + 0.3);
+
+                gain.gain.setValueAtTime(0.3, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.3);
+
+                osc.connect(gain);
+                gain.connect(this.ctx.destination);
+
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.3);
+            }
+
+            playWavBlob(blob) {
+                if (this.currentAudioElem) {
+                    this.currentAudioElem.pause();
+                }
+                const url = URL.createObjectURL(blob);
+                const audio = new Audio(url);
+                this.currentAudioElem = audio;
+                audio.play().catch(e => console.log("Audio play error:", e));
+            }
+        }
+
+        const sound = new SoundEngine();
+        const API_KEY = "";
+
+        async function fetchWithBackoff(url, options, maxRetries = 3) {
+            let delay = 1000;
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (response.status === 429) {
+                        await new Promise(r => setTimeout(r, delay));
+                        delay *= 2;
+                        continue;
+                    }
+                    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                    return await response.json();
+                } catch (err) {
+                    if (i === maxRetries - 1) throw err;
+                    await new Promise(r => setTimeout(r, delay));
+                    delay *= 2;
+                }
+            }
+        }
+
+        // --- GEMINI APIS ---
+        async function generateTrackDataWithGemini(prompt) {
+            if (!API_KEY) throw new Error("Gemini API não configurada; usar gerador local.");
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
+            const systemPrompt = "Tu és um engenheiro especializado em pistas 3D de berlindes. Gera pontos de spline 3D continuos e comentário desportivo em Português.";
+
+            const payload = {
+                contents: [{ parts: [{ text: `Cria uma pista 3D detalhada para a ideia: "${prompt}". Retorna obrigatoriamente um objeto JSON válido.` }] }],
+                systemInstruction: { parts: [{ text: systemPrompt }] },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: {
+                        type: "OBJECT",
+                        properties: {
+                            trackTitle: { type: "STRING" },
+                            theme: { type: "STRING", enum: ["volcano", "ice", "space", "portugal"] },
+                            announcerLine: { type: "STRING" },
+                            conceptArtPrompt: { type: "STRING" },
+                            points: {
+                                type: "ARRAY",
+                                items: {
+                                    type: "OBJECT",
+                                    properties: { x: { type: "NUMBER" }, y: { type: "NUMBER" }, z: { type: "NUMBER" } },
+                                    required: ["x", "y", "z"]
+                                }
+                            }
+                        },
+                        required: ["trackTitle", "theme", "announcerLine", "points"]
+                    }
+                }
+            };
+
+            const data = await fetchWithBackoff(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            return JSON.parse(data.candidates?.[0]?.content?.parts?.[0]?.text);
+        }
+
+        async function generateConceptArtWithImagen(prompt) {
+            if (!API_KEY) return null;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${API_KEY}`;
+            const payload = {
+                instances: [{ prompt: `Epic AAA concept art of marble racing track: ${prompt}, 8k resolution, cinematic` }],
+                parameters: { sampleCount: 1 }
+            };
+            const data = await fetchWithBackoff(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            const base64Bytes = data.predictions?.[0]?.bytesBase64Encoded;
+            return base64Bytes ? `data:image/png;base64,${base64Bytes}` : null;
+        }
+
+        async function speakAnnouncerLine(textPrompt) {
+            sound.init();
+            const announcerBtn = document.getElementById('btn-announcer');
+            const announcerIcon = document.getElementById('announcer-icon');
+            const announcerText = document.getElementById('announcer-btn-text');
+            const toast = document.getElementById('announcer-toast');
+            const toastText = document.getElementById('announcer-toast-text');
+
+            if (toast && toastText) {
+                toastText.textContent = `"${textPrompt}"`;
+                toast.classList.remove('opacity-0', '-translate-y-4', 'pointer-events-none');
+                toast.classList.add('opacity-100', 'translate-y-0');
+            }
+
+            if (!API_KEY && 'speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(textPrompt);
+                utterance.lang = 'pt-PT';
+                utterance.rate = 1.08;
+                window.speechSynthesis.speak(utterance);
+                setTimeout(() => {
+                    if (toast) {
+                        toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+                        toast.classList.remove('opacity-100', 'translate-y-0');
+                    }
+                }, 5000);
+                return;
+            }
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${API_KEY}`;
+            const payload = {
+                contents: [{ parts: [{ text: `Diz com tom de comentador desportivo: "${textPrompt}"` }] }],
+                generationConfig: {
+                    responseModalities: ["AUDIO"],
+                    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: "Puck" } } }
+                }
+            };
+
+            try {
+                const result = await fetchWithBackoff(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const base64Audio = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (base64Audio && mimeType) {
+                    const sampleRateMatch = mimeType.match(/rate=(\d+)/);
+                    const sampleRate = sampleRateMatch ? parseInt(sampleRateMatch[1], 10) : 24000;
+                    const binaryString = atob(base64Audio);
+                    const len = binaryString.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) bytes[i] = binaryString.charCodeAt(i);
+                    const pcm16 = new Int16Array(bytes.buffer);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    sound.playWavBlob(wavBlob);
+                }
+            } catch (e) {
+                console.log("Erro no TTS:", e);
+            } finally {
+                setTimeout(() => {
+                    if (toast) {
+                        toast.classList.add('opacity-0', '-translate-y-4', 'pointer-events-none');
+                        toast.classList.remove('opacity-100', 'translate-y-0');
+                    }
+                }, 5000);
+            }
+        }
+
+        function pcmToWav(pcm16, sampleRate = 24000) {
+            const buffer = new ArrayBuffer(44 + pcm16.length * 2);
+            const view = new DataView(buffer);
+            function writeString(v, offset, str) { for (let i = 0; i < str.length; i++) v.setUint8(offset + i, str.charCodeAt(i)); }
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + pcm16.length * 2, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true);
+            view.setUint16(22, 1, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, pcm16.length * 2, true);
+            let offset = 44;
+            for (let i = 0; i < pcm16.length; i++, offset += 2) view.setInt16(offset, pcm16[i], true);
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        async function askAIEngineer(question) {
+            if (!API_KEY) {
+                const q = question.toLowerCase();
+                if (q.includes('auto') || q.includes('automático')) return "No Modo Automático, o sistema de pilotagem calcula as trajectórias em tempo real, optimizando as travagens e antecipando as esferas de energia.";
+                if (q.includes('veloc')) return "Para alta velocidade, usa o Berlinde de Energia e conserva o turbo para as descidas longas.";
+                return "Modo Automático ativo! Podes relaxar ou mudar para controlo manual a qualquer momento no topo.";
+            }
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
+            const payload = {
+                contents: [{ parts: [{ text: question }] }],
+                systemInstruction: { parts: [{ text: "És o Engenheiro Principal do MARBLE RUSH™. Responde com entusiasmo em Português em 2 ou 3 frases concisas." }] }
+            };
+            const data = await fetchWithBackoff(apiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || "Ajuste de telemetria concluído!";
+        }
+
+        // --- GLOBAL GAME ENGINE VARIABLES ---
+        let scene, camera, renderer, controls;
+        let marble, trackMesh, trackCurve;
+        let particlesSystem, environmentObjects = [];
+        let clock = new THREE.Clock();
+
+        let camMode = 'follow';
+        let currentMaterial = 'lava';
+        let currentEnv = 'volcano';
+        let speed = 0;
+        let trackProgress = 0.012;
+        let forwardVelocity = 0.00115;
+        let lateralOffset = 0;
+        let lateralVelocity = 0;
+        let isBoosted = false;
+        let boostUntil = 0;
+        let isFalling = false;
+        let fallVelocity = new THREE.Vector3();
+        let fallTimer = 0;
+        let lastSafeProgress = 0.012;
+        let raceLap = 1;
+        const totalLaps = 3;
+        const checkpointFractions = [0.25, 0.50, 0.75];
+        let nextCheckpoint = 0;
+        let raceFinished = false;
+        let gameState = 'loading';
+        let raceStartTime = 0;
+        let elapsedRaceTime = 0;
+        let finalRacePosition = 4;
+        let countdownSequenceId = 0;
+        let pausedAt = 0;
+        let bestRaceTime = Number(localStorage.getItem('marbleRushBestTime') || 0);
+        let bestScore = Number(localStorage.getItem('marbleRushBestScore') || 0);
+        const championshipOrder = ['volcano', 'ice', 'space', 'portugal'];
+        const trackNames = { volcano: 'Vulcão Infernal', ice: 'Glaciar Cristalino', space: 'Órbita Zero', portugal: 'Lisboa Dourada' };
+        const trackUnlockStars = { volcano: 0, ice: 2, space: 5, portugal: 8 };
+        const marbleUnlockStars = { lava: 0, cristal: 0, energia: 2, galaxie: 4, ouro: 7, arcoiris: 10 };
+        const defaultCareer = { coins: 0, wins: 0, races: 0, crowns: 0, trackStars: { volcano: 0, ice: 0, space: 0, portugal: 0 } };
+        let career;
+        try {
+            career = { ...defaultCareer, ...(JSON.parse(localStorage.getItem('marbleRushCareerV4') || 'null') || {}) };
+            career.trackStars = { ...defaultCareer.trackStars, ...(career.trackStars || {}) };
+        } catch (e) {
+            career = JSON.parse(JSON.stringify(defaultCareer));
+        }
+        let gameMode = 'quick';
+        let championshipRound = 0;
+        let championshipPoints = 0;
+        let lastEarnedStars = 0;
+        let lastCoinReward = 0;
+        let score = 0;
+        let collectedOrbs = 0;
+        let turboEnergy = 100;
+        let arcadeGroup = null;
+        let boostPads = [];
+        let energyOrbs = [];
+        let hazardClusters = [];
+        let collisionCooldownUntil = 0;
+        const TRACK_HALF_WIDTH = 5.25;
+        const ORBS_PER_LAP = 8;
+        const TOTAL_RACE_ORBS = ORBS_PER_LAP * totalLaps;
+        const keys = { left: false, right: false };
+        let opponents = [];
+
+        // --- AUTONOMOUS PILOT SYSTEM ---
+        let autoPilotEnabled = true;
+        let autoContinueTimer = null;
+        let autoContinueSeconds = 3;
+
+        let frameCount = 0;
+        let lastFpsUpdate = performance.now();
+        let marbleMaterials = {};
+
+        function initThree() {
+            const container = document.getElementById('webgl-container');
+
+            scene = new THREE.Scene();
+            scene.fog = new THREE.FogExp2(0x0a050d, 0.012);
+
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 10, 20);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: "high-performance" });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.toneMapping = THREE.ACESFilmicToneMapping;
+            renderer.toneMappingExposure = 1.2;
+            container.appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.maxDistance = 150;
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
+            scene.add(ambientLight);
+
+            const mainLight = new THREE.DirectionalLight(0xffaa55, 2.5);
+            mainLight.position.set(40, 60, 20);
+            mainLight.castShadow = true;
+            mainLight.shadow.mapSize.width = 2048;
+            mainLight.shadow.mapSize.height = 2048;
+            mainLight.shadow.camera.near = 0.5;
+            mainLight.shadow.camera.far = 300;
+            const d = 50;
+            mainLight.shadow.camera.left = -d;
+            mainLight.shadow.camera.right = d;
+            mainLight.shadow.camera.top = d;
+            mainLight.shadow.camera.bottom = -d;
+            scene.add(mainLight);
+
+            const rimLight = new THREE.PointLight(0x00aaff, 3, 100);
+            rimLight.position.set(-20, 20, -20);
+            scene.add(rimLight);
+
+            window.addEventListener('resize', onWindowResize);
+        }
+
+        function disposeObject3D(object) {
+            if (!object) return;
+            object.traverse(child => {
+                if (child.geometry) child.geometry.dispose();
+                if (child.material) {
+                    const mats = Array.isArray(child.material) ? child.material : [child.material];
+                    mats.forEach(mat => mat && mat.dispose && mat.dispose());
+                }
+            });
+            scene.remove(object);
+        }
+
+        function getTrackFrame(progress) {
+            const t = ((progress % 1) + 1) % 1;
+            const center = trackCurve.getPointAt(t);
+            const tangent = trackCurve.getTangentAt(t).normalize();
+            const worldUp = new THREE.Vector3(0, 1, 0);
+            const side = new THREE.Vector3().crossVectors(tangent, worldUp);
+            if (side.lengthSq() < 0.0001) side.set(1, 0, 0);
+            side.normalize();
+            const up = new THREE.Vector3().crossVectors(side, tangent).normalize();
+            return { center, tangent, side, up };
+        }
+
+        function createTrack(theme = 'volcano', customPoints = null) {
+            if (trackMesh) disposeObject3D(trackMesh);
+
+            let points = [];
+            if (customPoints && customPoints.length > 2) {
+                points = customPoints;
+            } else if (theme === 'volcano') {
+                points = [
+                    new THREE.Vector3(0, 50, 0), new THREE.Vector3(20, 42, 30),
+                    new THREE.Vector3(50, 35, 10), new THREE.Vector3(30, 25, -40),
+                    new THREE.Vector3(-30, 18, -30), new THREE.Vector3(-50, 10, 20),
+                    new THREE.Vector3(0, 2, 50), new THREE.Vector3(40, -5, 0),
+                    new THREE.Vector3(0, -15, -40), new THREE.Vector3(-40, -25, 0)
+                ];
+            } else if (theme === 'ice') {
+                points = [
+                    new THREE.Vector3(0, 60, 0), new THREE.Vector3(40, 45, -20),
+                    new THREE.Vector3(20, 30, -60), new THREE.Vector3(-30, 20, -40),
+                    new THREE.Vector3(-60, 10, 10), new THREE.Vector3(-10, 0, 60),
+                    new THREE.Vector3(50, -10, 30), new THREE.Vector3(10, -20, -20)
+                ];
+            } else if (theme === 'space') {
+                points = [
+                    new THREE.Vector3(0, 40, 0), new THREE.Vector3(30, 50, 30),
+                    new THREE.Vector3(60, 20, 0), new THREE.Vector3(30, -10, -50),
+                    new THREE.Vector3(-30, 10, -30), new THREE.Vector3(-50, -20, 20)
+                ];
+            } else {
+                points = [
+                    new THREE.Vector3(0, 30, 0), new THREE.Vector3(15, 25, 30),
+                    new THREE.Vector3(45, 20, 30), new THREE.Vector3(45, 15, -20),
+                    new THREE.Vector3(-15, 10, -40), new THREE.Vector3(-45, 5, 0),
+                    new THREE.Vector3(-10, 0, 45)
+                ];
+            }
+
+            trackCurve = new THREE.CatmullRomCurve3(points, true, 'centripetal', 0.5);
+            trackMesh = new THREE.Group();
+            trackMesh.name = 'PlayableTrack';
+
+            const segments = 420;
+            const positions = [];
+            const uvs = [];
+            const indices = [];
+            const leftRailPoints = [];
+            const rightRailPoints = [];
+
+            for (let i = 0; i <= segments; i++) {
+                const t = i / segments;
+                const center = trackCurve.getPointAt(t % 1);
+                const tangent = trackCurve.getTangentAt(t % 1).normalize();
+                const side = new THREE.Vector3().crossVectors(tangent, new THREE.Vector3(0, 1, 0));
+                if (side.lengthSq() < 0.0001) side.set(1, 0, 0);
+                side.normalize();
+                const left = center.clone().addScaledVector(side, -TRACK_HALF_WIDTH);
+                const right = center.clone().addScaledVector(side, TRACK_HALF_WIDTH);
+                positions.push(left.x, left.y, left.z, right.x, right.y, right.z);
+                uvs.push(0, t * 24, 1, t * 24);
+                if (i < segments) {
+                    const a = i * 2, b = a + 1, c = a + 2, d = a + 3;
+                    indices.push(a, b, c, b, d, c);
+                }
+                if (i % 3 === 0 && i < segments) {
+                    leftRailPoints.push(left.clone().add(new THREE.Vector3(0, 1.15, 0)));
+                    rightRailPoints.push(right.clone().add(new THREE.Vector3(0, 1.15, 0)));
+                }
+            }
+
+            const roadGeo = new THREE.BufferGeometry();
+            roadGeo.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            roadGeo.setAttribute('uv', new THREE.Float32BufferAttribute(uvs, 2));
+            roadGeo.setIndex(indices);
+            roadGeo.computeVertexNormals();
+
+            const materialOptions = {
+                volcano: { color: 0x28110d, roughness: 0.42, metalness: 0.72, emissive: 0x210500, emissiveIntensity: 0.25 },
+                ice: { color: 0x9bdcff, roughness: 0.12, metalness: 0.12, emissive: 0x06304a, emissiveIntensity: 0.25 },
+                space: { color: 0x102854, roughness: 0.2, metalness: 0.9, emissive: 0x003b8f, emissiveIntensity: 0.5 },
+                portugal: { color: 0xb8892f, roughness: 0.58, metalness: 0.35, emissive: 0x2a1700, emissiveIntensity: 0.15 }
+            };
+            const roadMat = new THREE.MeshStandardMaterial({ ...materialOptions[theme], side: THREE.DoubleSide });
+            const road = new THREE.Mesh(roadGeo, roadMat);
+            road.castShadow = true;
+            road.receiveShadow = true;
+            trackMesh.add(road);
+
+            const railColor = theme === 'volcano' ? 0xff4a12 : theme === 'ice' ? 0x4ffaff : theme === 'space' ? 0x7c5cff : 0xf7c94a;
+            const railMat = new THREE.MeshStandardMaterial({ color: railColor, emissive: railColor, emissiveIntensity: 0.7, metalness: 0.65, roughness: 0.2 });
+            [leftRailPoints, rightRailPoints].forEach(pointsList => {
+                const curve = new THREE.CatmullRomCurve3(pointsList, true, 'centripetal', 0.5);
+                const geo = new THREE.TubeGeometry(curve, 260, 0.28, 8, true);
+                const rail = new THREE.Mesh(geo, railMat.clone());
+                rail.castShadow = true;
+                trackMesh.add(rail);
+            });
+
+            [0, ...checkpointFractions].forEach((t, index) => {
+                const frame = getTrackFrame(t);
+                const gateGeo = new THREE.TorusGeometry(TRACK_HALF_WIDTH + 1.1, 0.22, 10, 36);
+                const gateMat = new THREE.MeshBasicMaterial({ color: index === 0 ? 0xffffff : railColor, transparent: true, opacity: 0.75 });
+                const gate = new THREE.Mesh(gateGeo, gateMat);
+                gate.position.copy(frame.center).addScaledVector(frame.up, 3.2);
+                gate.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), frame.tangent);
+                trackMesh.add(gate);
+            });
+
+            scene.add(trackMesh);
+            createArcadeFeatures(theme);
+            resetRace(false);
+        }
+
+        function progressDistance(a, b) {
+            const raw = Math.abs(a - b);
+            return Math.min(raw, 1 - raw);
+        }
+
+        function makeTrackAlignedGroup(progress, height = 0) {
+            const frame = getTrackFrame(progress);
+            const group = new THREE.Group();
+            group.position.copy(frame.center).addScaledVector(frame.up, height);
+            const basis = new THREE.Matrix4().makeBasis(frame.side, frame.up, frame.tangent);
+            group.quaternion.setFromRotationMatrix(basis);
+            return group;
+        }
+
+        function createArcadeFeatures(theme) {
+            if (arcadeGroup) disposeObject3D(arcadeGroup);
+            boostPads = [];
+            energyOrbs = [];
+            hazardClusters = [];
+            arcadeGroup = new THREE.Group();
+            arcadeGroup.name = 'ArcadeFeatures';
+
+            const themeColors = {
+                volcano: { boost: 0xff7200, orb: 0xffd45a, hazard: 0xff3215 },
+                ice: { boost: 0x44f4ff, orb: 0xffffff, hazard: 0x45a8ff },
+                space: { boost: 0xa855f7, orb: 0x55ddff, hazard: 0xff4fd8 },
+                portugal: { boost: 0xffc928, orb: 0x56ff9c, hazard: 0xe53935 }
+            };
+            const colors = themeColors[theme] || themeColors.volcano;
+
+            const padSpecs = [[0.11, -2.0], [0.36, 2.1], [0.61, -1.5], [0.84, 1.8]];
+            padSpecs.forEach(([progress, offset], index) => {
+                const group = makeTrackAlignedGroup(progress, 0.16);
+                group.position.addScaledVector(getTrackFrame(progress).side, offset);
+                const mat = new THREE.MeshStandardMaterial({
+                    color: colors.boost, emissive: colors.boost, emissiveIntensity: 1.25,
+                    metalness: 0.75, roughness: 0.2, transparent: true, opacity: 0.92
+                });
+                const pad = new THREE.Mesh(new THREE.BoxGeometry(3.1, 0.22, 4.4), mat);
+                pad.receiveShadow = true;
+                group.add(pad);
+                for (let stripe = -1; stripe <= 1; stripe++) {
+                    const stripeMesh = new THREE.Mesh(
+                        new THREE.BoxGeometry(0.34, 0.05, 3.4),
+                        new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.75 })
+                    );
+                    stripeMesh.position.set(stripe * 0.75, 0.14, 0);
+                    group.add(stripeMesh);
+                }
+                arcadeGroup.add(group);
+                boostPads.push({ group, progress, offset, lastTriggerLap: 0, index });
+            });
+
+            const orbSpecs = [
+                [0.17, -2.8], [0.26, 1.6], [0.43, 3.0], [0.52, -1.1],
+                [0.67, -3.0], [0.75, 1.1], [0.89, 2.8], [0.96, -1.8]
+            ];
+            orbSpecs.forEach(([progress, offset], index) => {
+                const group = makeTrackAlignedGroup(progress, 2.15);
+                group.position.addScaledVector(getTrackFrame(progress).side, offset);
+                const orbMat = new THREE.MeshStandardMaterial({
+                    color: colors.orb, emissive: colors.orb, emissiveIntensity: 1.35,
+                    metalness: 0.4, roughness: 0.14
+                });
+                const orb = new THREE.Mesh(new THREE.IcosahedronGeometry(0.62, 2), orbMat);
+                const ring = new THREE.Mesh(
+                    new THREE.TorusGeometry(0.9, 0.08, 8, 28),
+                    new THREE.MeshBasicMaterial({ color: colors.orb, transparent: true, opacity: 0.8 })
+                );
+                ring.rotation.x = Math.PI / 2;
+                group.add(orb, ring);
+                arcadeGroup.add(group);
+                energyOrbs.push({ group, orb, ring, progress, offset, collectedLap: 0, index });
+            });
+
+            const hazardSpecs = [
+                { progress: 0.225, blocked: [-2.8, 0] },
+                { progress: 0.475, blocked: [0, 2.8] },
+                { progress: 0.715, blocked: [-2.8, 2.8] },
+                { progress: 0.925, blocked: [-2.8, 0] }
+            ];
+            hazardSpecs.forEach((spec, index) => {
+                const group = makeTrackAlignedGroup(spec.progress, 1.35);
+                const blocks = [];
+                spec.blocked.forEach((offset, blockIndex) => {
+                    const mat = new THREE.MeshStandardMaterial({
+                        color: colors.hazard, emissive: colors.hazard, emissiveIntensity: 0.5,
+                        metalness: 0.42, roughness: 0.5
+                    });
+                    const geometry = theme === 'ice'
+                        ? new THREE.OctahedronGeometry(1.22, 0)
+                        : theme === 'space'
+                            ? new THREE.DodecahedronGeometry(1.12, 0)
+                            : new THREE.BoxGeometry(2.05, 2.45, 1.8);
+                    const block = new THREE.Mesh(geometry, mat);
+                    block.position.x = offset;
+                    block.castShadow = true;
+                    block.userData.spin = (blockIndex ? -1 : 1) * (0.35 + index * 0.06);
+                    group.add(block);
+                    blocks.push(block);
+                });
+                arcadeGroup.add(group);
+                hazardClusters.push({ group, progress: spec.progress, blocked: spec.blocked, blocks, lastHitKey: '' });
+            });
+
+            scene.add(arcadeGroup);
+        }
+
+        function resetArcadeLap() {
+            energyOrbs.forEach(orb => {
+                orb.group.visible = true;
+                orb.collectedLap = 0;
+            });
+        }
+
+        function updateArcadeFeatures(delta, time) {
+            if (!arcadeGroup) return;
+
+            boostPads.forEach((pad, index) => {
+                const pulse = 0.75 + Math.sin(time * 5 + index) * 0.35;
+                pad.group.children.forEach((child, childIndex) => {
+                    if (child.material && 'emissiveIntensity' in child.material && childIndex === 0) child.material.emissiveIntensity = pulse + 0.55;
+                });
+            });
+
+            energyOrbs.forEach((orb, index) => {
+                orb.group.rotation.z += delta * (1.2 + index * 0.04);
+                orb.orb.rotation.x += delta * 1.8;
+                orb.group.position.y += Math.sin(time * 2.4 + index) * 0.0025;
+            });
+
+            hazardClusters.forEach((cluster, index) => {
+                cluster.blocks.forEach(block => {
+                    block.rotation.y += delta * block.userData.spin;
+                    block.rotation.x += delta * block.userData.spin * 0.35;
+                });
+                const glow = 0.35 + (Math.sin(time * 4 + index) + 1) * 0.18;
+                cluster.blocks.forEach(block => { if (block.material) block.material.emissiveIntensity = glow; });
+            });
+
+            if (gameState !== 'racing' || isFalling || raceFinished) return;
+
+            boostPads.forEach(pad => {
+                if (pad.lastTriggerLap === raceLap) return;
+                if (progressDistance(trackProgress, pad.progress) < 0.012 && Math.abs(lateralOffset - pad.offset) < 1.75) {
+                    pad.lastTriggerLap = raceLap;
+                    boostUntil = Math.max(boostUntil, performance.now() + 1450);
+                    turboEnergy = Math.min(100, turboEnergy + 22);
+                    score += 60;
+                    sound.playBoost();
+                    showRaceMessage('⚡ PLATAFORMA TURBO — +60 PONTOS', 1100);
+                }
+            });
+
+            energyOrbs.forEach(orb => {
+                if (orb.collectedLap === raceLap || !orb.group.visible) return;
+                if (progressDistance(trackProgress, orb.progress) < 0.013 && Math.abs(lateralOffset - orb.offset) < 1.28) {
+                    orb.collectedLap = raceLap;
+                    orb.group.visible = false;
+                    collectedOrbs++;
+                    turboEnergy = Math.min(100, turboEnergy + 14);
+                    score += 100;
+                    sound.playImpact(0.28);
+                    showRaceMessage('✦ ENERGIA RECOLHIDA — +100 PONTOS', 900);
+                }
+            });
+
+            if (performance.now() < collisionCooldownUntil) return;
+            hazardClusters.forEach((cluster, index) => {
+                const hitKey = `${raceLap}-${index}`;
+                if (cluster.lastHitKey === hitKey) return;
+                if (progressDistance(trackProgress, cluster.progress) < 0.0105) {
+                    const hitBlock = cluster.blocked.some(offset => Math.abs(lateralOffset - offset) < 1.23);
+                    if (hitBlock) {
+                        cluster.lastHitKey = hitKey;
+                        collisionCooldownUntil = performance.now() + 850;
+                        forwardVelocity = Math.max(0.00072, forwardVelocity * 0.46);
+                        lateralVelocity += lateralOffset >= 0 ? -1.25 : 1.25;
+                        score = Math.max(0, score - 75);
+                        turboEnergy = Math.max(0, turboEnergy - 12);
+                        sound.playImpact(0.9);
+                        showRaceMessage('💥 IMPACTO! −75 PONTOS', 1300);
+                    }
+                }
+            });
+        }
+
+        function createMarble() {
+            const sphereGeo = new THREE.SphereGeometry(1.6, 64, 64);
+
+            marbleMaterials = {
+                lava: new THREE.MeshStandardMaterial({ color: 0xff3300, roughness: 0.2, metalness: 0.5, emissive: 0xff1100, emissiveIntensity: 0.8 }),
+                cristal: new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 0.9, opacity: 1, transparent: true, roughness: 0.05, ior: 1.5, thickness: 2.0 }),
+                energia: new THREE.MeshStandardMaterial({ color: 0x00ffff, roughness: 0.1, metalness: 0.8, emissive: 0x0088ff, emissiveIntensity: 1.0 }),
+                galaxie: new THREE.MeshStandardMaterial({ color: 0x220044, roughness: 0.3, metalness: 0.7, emissive: 0x6600cc, emissiveIntensity: 0.4 }),
+                ouro: new THREE.MeshStandardMaterial({ color: 0xffd700, roughness: 0.15, metalness: 0.95 }),
+                arcoiris: new THREE.MeshStandardMaterial({ color: 0xff00ff, roughness: 0.2, metalness: 0.6 })
+            };
+
+            marble = new THREE.Mesh(sphereGeo, marbleMaterials[currentMaterial]);
+            marble.castShadow = true;
+            marble.receiveShadow = true;
+
+            const innerGeo = new THREE.SphereGeometry(0.9, 32, 32);
+            const innerMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+            marble.add(new THREE.Mesh(innerGeo, innerMat));
+
+            scene.add(marble);
+        }
+
+        function setMarbleMaterial(type) {
+            currentMaterial = type;
+            if (marble && marbleMaterials[type]) {
+                marble.material = marbleMaterials[type];
+            }
+        }
+
+        function createOpponents() {
+            opponents.forEach(o => scene.remove(o.mesh));
+            opponents = [];
+            const colors = [0x36e0ff, 0xff4fd8, 0x9cff57];
+            const offsets = [-2.6, 0.4, 2.7];
+            const speeds = [0.00121, 0.00128, 0.00116];
+            colors.forEach((color, i) => {
+                const mat = new THREE.MeshStandardMaterial({ color, metalness: 0.75, roughness: 0.16, emissive: color, emissiveIntensity: 0.35 });
+                const mesh = new THREE.Mesh(new THREE.SphereGeometry(1.35, 36, 36), mat);
+                mesh.castShadow = true;
+                scene.add(mesh);
+                opponents.push({ mesh, progress: 0.006 + i * 0.006, lap: 0, offset: offsets[i], baseSpeed: speeds[i], finished: false });
+            });
+        }
+
+        function formatRaceTime(ms) {
+            if (!ms || ms < 0) return '00:00.000';
+            const total = Math.floor(ms);
+            const minutes = Math.floor(total / 60000);
+            const seconds = Math.floor((total % 60000) / 1000);
+            const millis = total % 1000;
+            return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}.${String(millis).padStart(3, '0')}`;
+        }
+
+        function totalCareerStars() {
+            return championshipOrder.reduce((sum, env) => sum + Number(career.trackStars[env] || 0), 0);
+        }
+
+        function saveCareer() {
+            localStorage.setItem('marbleRushCareerV4', JSON.stringify(career));
+        }
+
+        function starText(value) {
+            const stars = Math.max(0, Math.min(3, Number(value) || 0));
+            return '★'.repeat(stars) + '☆'.repeat(3 - stars);
+        }
+
+        function isTrackUnlocked(env) { return totalCareerStars() >= (trackUnlockStars[env] || 0); }
+        function isMarbleUnlocked(type) { return totalCareerStars() >= (marbleUnlockStars[type] || 0); }
+
+        function careerRank(stars) {
+            if (stars >= 12) return 'LENDA DO RUSH';
+            if (stars >= 9) return 'CAMPEÃO';
+            if (stars >= 6) return 'MESTRE';
+            if (stars >= 3) return 'PILOTO';
+            return 'NOVATO';
+        }
+
+        function updateCareerUI() {
+            const stars = totalCareerStars();
+            const level = Math.min(5, Math.floor(stars / 3) + 1);
+            const levelStart = (level - 1) * 3;
+            const nextTarget = Math.min(12, level * 3);
+            const progress = level >= 5 ? 100 : ((stars - levelStart) / 3) * 100;
+            const setText = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+            setText('career-level', String(level));
+            setText('career-stars', `${stars}/12`);
+            setText('career-coins', String(career.coins || 0));
+            setText('career-crowns', String(career.crowns || 0));
+            setText('career-rank', careerRank(stars));
+            setText('career-next-level', level >= 5 ? 'Progressão máxima alcançada' : `Próximo nível: ${nextTarget} estrelas`);
+            setText('championship-summary', `Campeonato: ${career.crowns || 0} títulos · ${career.wins || 0} vitórias · ${career.races || 0} provas`);
+            const bar = document.getElementById('career-progress-bar');
+            if (bar) bar.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+
+            championshipOrder.forEach(env => { setText(`track-stars-${env}`, starText(career.trackStars[env])); });
+
+            document.querySelectorAll('.menu-env-btn, .env-btn').forEach(btn => {
+                const env = btn.dataset.env;
+                const progressionLocked = !isTrackUnlocked(env);
+                const championshipLocked = gameMode === 'championship' && env !== championshipOrder[championshipRound];
+                btn.classList.toggle('locked', progressionLocked || championshipLocked);
+                btn.setAttribute('aria-disabled', progressionLocked || championshipLocked ? 'true' : 'false');
+            });
+
+            document.querySelectorAll('.menu-marble-btn, .marble-btn').forEach(btn => {
+                const locked = !isMarbleUnlocked(btn.dataset.material);
+                btn.classList.toggle('locked', locked);
+                btn.classList.toggle('marble-locked', locked);
+            });
+
+            const modeLabel = document.getElementById('race-mode-label');
+            if (modeLabel) modeLabel.textContent = gameMode === 'championship' ? `CAMPEONATO ${championshipRound + 1}/4 · ${championshipPoints} PTS` : 'CORRIDA RÁPIDA';
+            const startLabel = document.getElementById('start-button-label');
+            if (startLabel) startLabel.textContent = gameMode === 'championship' ? 'COMEÇAR CAMPEONATO' : 'INICIAR CORRIDA';
+            
+            // Update Auto Mode UI elements
+            const autoMenuBtn = document.getElementById('btn-toggle-auto-menu');
+            const autoMenuText = document.getElementById('auto-menu-status');
+            const autoHudBtn = document.getElementById('btn-toggle-autopilot');
+            const autoHudIcon = document.getElementById('autopilot-icon');
+            const autoHudText = document.getElementById('autopilot-btn-text');
+            const autoHudState = document.getElementById('hud-autopilot-state');
+
+            if (autoMenuBtn && autoMenuText) {
+                autoMenuBtn.classList.toggle('auto-mode-active', autoPilotEnabled);
+                autoMenuText.textContent = autoPilotEnabled ? "AUTOMÁTICO: ON" : "MANUAL: ON";
+            }
+            if (autoHudBtn && autoHudText && autoHudIcon && autoHudState) {
+                autoHudBtn.classList.toggle('auto-mode-active', autoPilotEnabled);
+                autoHudText.textContent = autoPilotEnabled ? "AUTO: ON" : "MANUAL";
+                autoHudIcon.className = autoPilotEnabled ? "fa-solid fa-robot animate-pulse" : "fa-solid fa-gamepad";
+                autoHudState.textContent = autoPilotEnabled ? "AUTOMÁTICO" : "MANUAL";
+                autoHudState.className = autoPilotEnabled ? "text-emerald-300 font-bold" : "text-amber-300 font-bold";
+            }
+
+            const touchGroup = document.getElementById('manual-touch-controls');
+            const touchBoost = document.getElementById('manual-touch-boost');
+            if (touchGroup && touchBoost) {
+                if (autoPilotEnabled) {
+                    touchGroup.classList.add('hidden');
+                    touchBoost.classList.add('hidden');
+                } else {
+                    touchGroup.classList.remove('hidden');
+                    touchBoost.classList.remove('hidden');
+                }
+            }
+        }
+
+        function updateTimeDisplays() {
+            const current = gameState === 'racing' ? performance.now() - raceStartTime : gameState === 'paused' ? pausedAt - raceStartTime : elapsedRaceTime;
+            const raceTime = document.getElementById('race-time');
+            if (raceTime) raceTime.textContent = formatRaceTime(current);
+            const menuBest = document.getElementById('menu-best-time');
+            if (menuBest) menuBest.textContent = bestRaceTime > 0 ? formatRaceTime(bestRaceTime) : '--:--.---';
+            const menuBestScore = document.getElementById('menu-best-score');
+            if (menuBestScore) menuBestScore.textContent = String(bestScore);
+            updateCareerUI();
+        }
+
+        function syncChoiceButtons() {
+            document.querySelectorAll('.menu-env-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.env === currentEnv));
+            document.querySelectorAll('.menu-marble-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.material === currentMaterial));
+            document.querySelectorAll('.env-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.env === currentEnv));
+            document.querySelectorAll('.marble-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.material === currentMaterial));
+            updateCareerUI();
+        }
+
+        function toggleAutoPilot() {
+            autoPilotEnabled = !autoPilotEnabled;
+            sound.init();
+            sound.playBoost();
+            showRaceMessage(autoPilotEnabled ? "🤖 PILOTO AUTOMÁTICO ATIVADO — HANDS-FREE" : "🎮 CONTROLO MANUAL ATIVADO", 2000);
+            updateCareerUI();
+        }
+
+        function selectMode(mode) {
+            gameMode = mode === 'championship' ? 'championship' : 'quick';
+            championshipPoints = 0;
+            if (gameMode === 'championship') {
+                championshipRound = 0;
+                currentEnv = championshipOrder[0];
+                createEnvironment(currentEnv);
+                resetRace(false);
+            }
+            syncChoiceButtons();
+        }
+
+        function selectEnvironment(env, force = false) {
+            if (!force && gameMode === 'championship') return;
+            if (!force && !isTrackUnlocked(env)) return;
+            currentEnv = env;
+            createEnvironment(env);
+            resetRace(false);
+            syncChoiceButtons();
+        }
+
+        function selectMarble(type) {
+            if (!isMarbleUnlocked(type)) return;
+            setMarbleMaterial(type);
+            syncChoiceButtons();
+        }
+
+        function showMainMenu() {
+            if (autoContinueTimer) clearInterval(autoContinueTimer);
+            countdownSequenceId++;
+            gameState = 'menu';
+            raceFinished = false;
+            document.getElementById('finish-screen')?.classList.add('hidden');
+            document.getElementById('pause-screen')?.classList.add('hidden');
+            document.getElementById('start-screen')?.classList.remove('hidden');
+            updateTimeDisplays();
+            syncChoiceButtons();
+        }
+
+        function startCountdown() {
+            if (autoContinueTimer) clearInterval(autoContinueTimer);
+            const sequenceId = ++countdownSequenceId;
+            if (gameMode === 'championship') {
+                const officialEnv = championshipOrder[championshipRound];
+                if (currentEnv !== officialEnv) selectEnvironment(officialEnv, true);
+            }
+            document.getElementById('start-screen')?.classList.add('hidden');
+            document.getElementById('finish-screen')?.classList.add('hidden');
+            document.getElementById('pause-screen')?.classList.add('hidden');
+            resetRace(false);
+            gameState = 'countdown';
+            const screen = document.getElementById('countdown-screen');
+            const number = document.getElementById('countdown-number');
+            screen.classList.remove('hidden');
+            screen.classList.add('flex');
+            const steps = ['3', '2', '1', 'RUSH!'];
+            steps.forEach((value, index) => {
+                setTimeout(() => {
+                    if (sequenceId !== countdownSequenceId) return;
+                    number.textContent = value;
+                    number.style.animation = 'none';
+                    void number.offsetWidth;
+                    number.style.animation = '';
+                    if (value === 'RUSH!') {
+                        sound.init();
+                        sound.playBoost();
+                        raceStartTime = performance.now();
+                        elapsedRaceTime = 0;
+                        gameState = 'racing';
+                        showRaceMessage(autoPilotEnabled ? '🤖 RUSH! PILOTO AUTOMÁTICO NA PISTA' : '🎮 RUSH! MANUELA A PRIMEIRA POSIÇÃO', 1800);
+                        setTimeout(() => {
+                            if (sequenceId !== countdownSequenceId) return;
+                            screen.classList.add('hidden');
+                            screen.classList.remove('flex');
+                        }, 620);
+                    } else {
+                        sound.init();
+                        sound.playImpact(0.25);
+                    }
+                }, index * 820);
+            });
+        }
+
+        function calculateRaceStars() {
+            let stars = 1;
+            if (finalRacePosition <= 2 || score >= 2400) stars = 2;
+            if (finalRacePosition === 1 && score >= 3200) stars = 3;
+            return stars;
+        }
+
+        function advanceChampionship() {
+            if (gameMode !== 'championship') return;
+            const nextRound = championshipRound + 1;
+            if (nextRound >= championshipOrder.length) {
+                showMainMenu();
+                return;
+            }
+            const nextEnv = championshipOrder[nextRound];
+            if (!isTrackUnlocked(nextEnv)) {
+                showMainMenu();
+                return;
+            }
+            championshipRound = nextRound;
+            selectEnvironment(nextEnv, true);
+            startCountdown();
+        }
+
+        function finishRace() {
+            if (raceFinished) return;
+            raceFinished = true;
+            gameState = 'finished';
+            forwardVelocity = 0;
+            elapsedRaceTime = Math.max(0, performance.now() - raceStartTime);
+            finalRacePosition = Math.min(4, 1 + opponents.filter(o => o.finished).length);
+            const positionBonus = [0, 1500, 900, 500, 250][finalRacePosition] || 0;
+            const energyBonus = Math.floor(turboEnergy * 3);
+            score += positionBonus + energyBonus;
+
+            if (finalRacePosition === 1 && (!bestRaceTime || elapsedRaceTime < bestRaceTime)) {
+                bestRaceTime = elapsedRaceTime;
+                localStorage.setItem('marbleRushBestTime', String(bestRaceTime));
+            }
+            if (score > bestScore) {
+                bestScore = score;
+                localStorage.setItem('marbleRushBestScore', String(bestScore));
+            }
+
+            lastEarnedStars = calculateRaceStars();
+            const previousStars = Number(career.trackStars[currentEnv] || 0);
+            const newStars = Math.max(0, lastEarnedStars - previousStars);
+            career.trackStars[currentEnv] = Math.max(previousStars, lastEarnedStars);
+            career.races = Number(career.races || 0) + 1;
+            if (finalRacePosition === 1) career.wins = Number(career.wins || 0) + 1;
+            const positionCoins = [0, 160, 110, 75, 50][finalRacePosition] || 40;
+            lastCoinReward = 35 + positionCoins + newStars * 100;
+            career.coins = Number(career.coins || 0) + lastCoinReward;
+
+            if (gameMode === 'championship') {
+                const points = [0, 10, 7, 5, 3][finalRacePosition] || 0;
+                championshipPoints += points;
+            }
+
+            const finalChampionshipRace = gameMode === 'championship' && championshipRound === championshipOrder.length - 1;
+            if (finalChampionshipRace) {
+                career.crowns = Number(career.crowns || 0) + 1;
+                career.coins += 500;
+                lastCoinReward += 500;
+            }
+            saveCareer();
+
+            document.getElementById('finish-position').textContent = `${finalRacePosition}/4`;
+            document.getElementById('finish-time').textContent = formatRaceTime(elapsedRaceTime);
+            document.getElementById('finish-best').textContent = bestRaceTime ? formatRaceTime(bestRaceTime) : '--:--.---';
+            document.getElementById('finish-score').textContent = String(score);
+            document.getElementById('finish-stars').textContent = starText(lastEarnedStars);
+            document.getElementById('finish-reward').textContent = `+${lastCoinReward} 🪙`;
+
+            const nextButton = document.getElementById('btn-next-round');
+            const championshipLine = document.getElementById('finish-championship');
+            nextButton?.classList.add('hidden');
+            championshipLine?.classList.add('hidden');
+
+            if (finalChampionshipRace) {
+                document.getElementById('finish-title').textContent = '👑 CAMPEÃO MARBLE RUSH!';
+                document.getElementById('finish-subtitle').textContent = `Concluíste as 4 provas com ${championshipPoints} pontos!`;
+                document.getElementById('finish-kicker').textContent = 'CAMPEONATO CONCLUÍDO';
+            } else {
+                document.getElementById('finish-title').textContent = finalRacePosition === 1 ? '🏆 VITÓRIA!' : '🏁 META ALCANÇADA';
+                document.getElementById('finish-subtitle').textContent = `Terminaste em ${finalRacePosition}.º lugar e conquistaste ${lastEarnedStars} estrela(s).`;
+                document.getElementById('finish-kicker').textContent = finalRacePosition === 1 ? 'CAMPEÃO DO CIRCUITO' : 'CORRIDA CONCLUÍDA';
+            }
+
+            if (gameMode === 'championship' && !finalChampionshipRace) {
+                const nextEnv = championshipOrder[championshipRound + 1];
+                if (championshipLine) {
+                    championshipLine.textContent = `CAMPEONATO · ${championshipPoints} PTS · PRÓXIMA: ${trackNames[nextEnv]}`;
+                    championshipLine.classList.remove('hidden');
+                }
+                if (isTrackUnlocked(nextEnv)) nextButton?.classList.remove('hidden');
+            }
+
+            // AUTO CONTINUE CONTROLLER
+            const autoBanner = document.getElementById('auto-continue-banner');
+            const autoTimerEl = document.getElementById('auto-continue-timer');
+
+            if (autoPilotEnabled) {
+                autoBanner.classList.remove('hidden');
+                autoContinueSeconds = 3;
+                autoTimerEl.textContent = String(autoContinueSeconds);
+
+                if (autoContinueTimer) clearInterval(autoContinueTimer);
+                autoContinueTimer = setInterval(() => {
+                    autoContinueSeconds--;
+                    if (autoTimerEl) autoTimerEl.textContent = String(autoContinueSeconds);
+                    if (autoContinueSeconds <= 0) {
+                        clearInterval(autoContinueTimer);
+                        if (gameMode === 'championship' && !finalChampionshipRace) {
+                            advanceChampionship();
+                        } else {
+                            startCountdown();
+                        }
+                    }
+                }, 1000);
+            } else {
+                autoBanner.classList.add('hidden');
+            }
+
+            showRaceMessage(finalRacePosition === 1 ? '🏆 PRIMEIRO LUGAR!' : `META — ${finalRacePosition}.º LUGAR`, 3500);
+            updateTimeDisplays();
+
+            if (finalRacePosition === 1) {
+                speakAnnouncerLine('Vitória no Modo Automático! O piloto robótico cruzou a meta em primeiro lugar!');
+            } else {
+                speakAnnouncerLine(`Corrida concluída em ${finalRacePosition}.º lugar! Excelente performance!`);
+            }
+
+            setTimeout(() => document.getElementById('finish-screen')?.classList.remove('hidden'), 1000);
+        }
+
+        function showRaceMessage(text, duration = 1800) {
+            const el = document.getElementById('race-message');
+            if (!el) return;
+            el.textContent = text;
+            el.style.opacity = '1';
+            clearTimeout(showRaceMessage.timer);
+            showRaceMessage.timer = setTimeout(() => { el.style.opacity = '0.45'; }, duration);
+        }
+
+        function updateRaceHUD() {
+            const playerDistance = (raceLap - 1) + trackProgress;
+            const ahead = opponents.filter(o => (o.lap + o.progress) > playerDistance && !o.finished).length;
+            const position = raceFinished ? finalRacePosition : 1 + ahead;
+            document.getElementById('race-position').textContent = `${Math.min(position, 4)}/4`;
+            document.getElementById('race-lap').textContent = `${Math.min(raceLap, totalLaps)}/${totalLaps}`;
+            document.getElementById('race-checkpoint').textContent = `${nextCheckpoint}/3`;
+            const modeLabel = document.getElementById('race-mode-label');
+            if (modeLabel) modeLabel.textContent = gameMode === 'championship' ? `CAMPEONATO ${championshipRound + 1}/4 · ${championshipPoints} PTS` : 'CORRIDA RÁPIDA';
+            const scoreEl = document.getElementById('race-score');
+            if (scoreEl) scoreEl.textContent = String(score);
+            const orbsEl = document.getElementById('race-orbs');
+            if (orbsEl) orbsEl.textContent = `${collectedOrbs}/${TOTAL_RACE_ORBS}`;
+            const energyText = document.getElementById('turbo-energy-text');
+            if (energyText) energyText.textContent = `${Math.round(turboEnergy)}%`;
+            const energyBar = document.getElementById('turbo-energy-bar');
+            if (energyBar) energyBar.style.width = `${Math.max(0, Math.min(100, turboEnergy))}%`;
+        }
+
+        function resetRace(announce = true) {
+            if (autoContinueTimer) clearInterval(autoContinueTimer);
+            trackProgress = 0.012;
+            forwardVelocity = 0.00115;
+            lateralOffset = 0;
+            lateralVelocity = 0;
+            isFalling = false;
+            fallTimer = 0;
+            raceLap = 1;
+            nextCheckpoint = 0;
+            raceFinished = false;
+            elapsedRaceTime = 0;
+            raceStartTime = 0;
+            finalRacePosition = 4;
+            pausedAt = 0;
+            score = 0;
+            collectedOrbs = 0;
+            turboEnergy = 100;
+            boostUntil = 0;
+            collisionCooldownUntil = 0;
+            lastSafeProgress = trackProgress;
+            boostPads.forEach(pad => { pad.lastTriggerLap = 0; });
+            hazardClusters.forEach(cluster => { cluster.lastHitKey = ''; });
+            resetArcadeLap();
+            opponents.forEach((o, i) => {
+                o.progress = 0.006 + i * 0.006;
+                o.lap = 0;
+                o.finished = false;
+            });
+            if (announce) showRaceMessage('CORRIDA REINICIADA', 2200);
+            updateRaceHUD();
+        }
+
+        function respawnMarble() {
+            isFalling = false;
+            trackProgress = lastSafeProgress;
+            lateralOffset = 0;
+            lateralVelocity = 0;
+            forwardVelocity = 0.00105;
+            score = Math.max(0, score - 150);
+            turboEnergy = Math.max(0, turboEnergy - 20);
+            showRaceMessage('FORA DA PISTA — −150 PONTOS', 2200);
+            sound.playImpact(0.65);
+        }
+
+        function triggerBoost() {
+            if (gameState !== 'racing' || raceFinished || isFalling) return;
+            if (turboEnergy < 25) {
+                showRaceMessage('ENERGIA INSUFICIENTE', 1200);
+                sound.playImpact(0.18);
+                return;
+            }
+            turboEnergy = Math.max(0, turboEnergy - 25);
+            sound.init();
+            sound.playBoost();
+            isBoosted = true;
+            boostUntil = performance.now() + 1550;
+            showRaceMessage('TURBO ATIVADO!', 900);
+        }
+
+        function updateCheckpoints(previousProgress, currentProgress) {
+            if (raceFinished) return;
+            if (nextCheckpoint < checkpointFractions.length) {
+                const cp = checkpointFractions[nextCheckpoint];
+                if (previousProgress < cp && currentProgress >= cp) {
+                    nextCheckpoint++;
+                    showRaceMessage(`CHECKPOINT ${nextCheckpoint}/3`, 900);
+                    sound.playImpact(0.3);
+                }
+            }
+            if (currentProgress < previousProgress) {
+                if (nextCheckpoint === checkpointFractions.length) {
+                    if (raceLap >= totalLaps) {
+                        finishRace();
+                    } else {
+                        raceLap++;
+                        nextCheckpoint = 0;
+                        resetArcadeLap();
+                        showRaceMessage(`VOLTA ${raceLap}/${totalLaps}`, 1800);
+                    }
+                } else {
+                    nextCheckpoint = 0;
+                }
+            }
+        }
+
+        function updateOpponents(delta, time) {
+            if (gameState !== 'racing') return;
+            opponents.forEach((o, i) => {
+                if (!trackCurve || o.finished) return;
+                const frame = getTrackFrame(o.progress);
+                const slopeFactor = THREE.MathUtils.clamp(-frame.tangent.y * 0.00016, -0.00005, 0.00008);
+                o.progress += (o.baseSpeed + slopeFactor + Math.sin(time * 0.9 + i) * 0.000025) * delta * 60;
+                if (o.progress >= 1) {
+                    o.progress -= 1;
+                    o.lap++;
+                    if (o.lap >= totalLaps) o.finished = true;
+                }
+                const newFrame = getTrackFrame(o.progress);
+                const weave = Math.sin(time * (0.65 + i * 0.08) + i) * 0.55;
+                o.mesh.position.copy(newFrame.center)
+                    .addScaledVector(newFrame.side, o.offset + weave)
+                    .addScaledVector(newFrame.up, 1.45);
+                o.mesh.rotation.x += 0.06 * delta * 60;
+                o.mesh.rotation.z += 0.035 * delta * 60;
+            });
+        }
+
+        function togglePause(forceResume = false) {
+            if (gameState === 'racing' && !forceResume) {
+                pausedAt = performance.now();
+                gameState = 'paused';
+                keys.left = false;
+                keys.right = false;
+                document.getElementById('pause-screen')?.classList.remove('hidden');
+                if (sound.rollGain && sound.ctx) sound.rollGain.gain.setTargetAtTime(0, sound.ctx.currentTime, 0.03);
+                return;
+            }
+            if (gameState === 'paused') {
+                raceStartTime += performance.now() - pausedAt;
+                gameState = 'racing';
+                document.getElementById('pause-screen')?.classList.add('hidden');
+            }
+        }
+
+        function setupPlayableControls() {
+            const setKey = (key, value) => {
+                if (key === 'ArrowLeft' || key.toLowerCase() === 'a') keys.left = value;
+                if (key === 'ArrowRight' || key.toLowerCase() === 'd') keys.right = value;
+            };
+            window.addEventListener('keydown', e => {
+                setKey(e.key, true);
+                if (e.code === 'Space') { e.preventDefault(); if (!e.repeat) triggerBoost(); }
+                if ((e.key === 'Escape' || e.key.toLowerCase() === 'p') && !e.repeat && ['racing','paused'].includes(gameState)) togglePause();
+                if (e.key.toLowerCase() === 'r' && !['loading','menu'].includes(gameState)) startCountdown();
+            });
+            window.addEventListener('keyup', e => setKey(e.key, false));
+
+            const bindHold = (id, prop) => {
+                const btn = document.getElementById(id);
+                if (!btn) return;
+                ['pointerdown', 'touchstart'].forEach(evt => btn.addEventListener(evt, e => { e.preventDefault(); keys[prop] = true; }));
+                ['pointerup', 'pointercancel', 'pointerleave', 'touchend'].forEach(evt => btn.addEventListener(evt, e => { e.preventDefault(); keys[prop] = false; }));
+            };
+            bindHold('touch-left', 'left');
+            bindHold('touch-right', 'right');
+            document.getElementById('touch-boost')?.addEventListener('click', triggerBoost);
+        }
+
+        function createEnvironment(theme) {
+            currentEnv = theme;
+            environmentObjects.forEach(obj => scene.remove(obj));
+            environmentObjects = [];
+            if (particlesSystem) scene.remove(particlesSystem);
+
+            const envLabel = document.getElementById('environment-label');
+            const weatherIcon = document.getElementById('weather-icon');
+
+            if (theme === 'volcano') {
+                envLabel.textContent = "Vulcão Ativo";
+                weatherIcon.className = "fa-solid fa-fire text-amber-500";
+                scene.fog.color.setHex(0x1a0803);
+                renderer.setClearColor(0x0a0302);
+
+                const groundGeo = new THREE.PlaneGeometry(500, 500);
+                const groundMat = new THREE.MeshStandardMaterial({ color: 0x330500, emissive: 0xff2200, emissiveIntensity: 0.4, roughness: 0.9 });
+                const ground = new THREE.Mesh(groundGeo, groundMat);
+                ground.rotation.x = -Math.PI / 2;
+                ground.position.y = -40;
+                scene.add(ground);
+                environmentObjects.push(ground);
+                createParticles(1200, 0xff5500, 0.8, 60);
+
+            } else if (theme === 'ice') {
+                envLabel.textContent = "Montanha Gelada";
+                weatherIcon.className = "fa-solid fa-snowflake text-cyan-300";
+                scene.fog.color.setHex(0x081522);
+                renderer.setClearColor(0x040b12);
+
+                const groundGeo = new THREE.PlaneGeometry(500, 500);
+                const groundMat = new THREE.MeshStandardMaterial({ color: 0x88ccff, roughness: 0.2 });
+                const ground = new THREE.Mesh(groundGeo, groundMat);
+                ground.rotation.x = -Math.PI / 2;
+                ground.position.y = -40;
+                scene.add(ground);
+                environmentObjects.push(ground);
+                createParticles(2000, 0xffffff, 0.5, 80);
+
+            } else if (theme === 'space') {
+                envLabel.textContent = "Estação Espacial";
+                weatherIcon.className = "fa-solid fa-user-astronaut text-purple-400";
+                scene.fog.color.setHex(0x020208);
+                renderer.setClearColor(0x010104);
+                createParticles(3000, 0xaabbff, 0.4, 150);
+
+            } else if (theme === 'portugal') {
+                envLabel.textContent = "Tour Lisboa";
+                weatherIcon.className = "fa-solid fa-sun text-yellow-400";
+                scene.fog.color.setHex(0x101a28);
+                renderer.setClearColor(0x0a101d);
+
+                for (let i = 0; i < 5; i++) {
+                    const archGeo = new THREE.TorusGeometry(12, 1.5, 16, 32, Math.PI);
+                    const archMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.3 });
+                    const arch = new THREE.Mesh(archGeo, archMat);
+                    arch.position.set(Math.sin(i * 1.5) * 40, i * 8 - 10, Math.cos(i * 1.5) * 40);
+                    arch.rotation.y = i;
+                    scene.add(arch);
+                    environmentObjects.push(arch);
+                }
+                createParticles(800, 0xffd700, 0.6, 70);
+            }
+
+            createTrack(theme);
+        }
+
+        function createParticles(count, colorHex, size, radius) {
+            const pGeo = new THREE.BufferGeometry();
+            const positions = new Float32Array(count * 3);
+            for (let i = 0; i < count * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * radius * 2;
+                positions[i + 1] = (Math.random() - 0.5) * radius * 2;
+                positions[i + 2] = (Math.random() - 0.5) * radius * 2;
+            }
+            pGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            const pMat = new THREE.PointsMaterial({ color: colorHex, size: size, transparent: true, opacity: 0.7, blending: THREE.AdditiveBlending });
+            particlesSystem = new THREE.Points(pGeo, pMat);
+            scene.add(particlesSystem);
+        }
+
+        function updateAutonomousPilot(delta) {
+            if (!autoPilotEnabled || gameState !== 'racing' || isFalling || raceFinished) return;
+
+            // Look ahead distance
+            const lookAheadProgress = (trackProgress + 0.025) % 1;
+            let targetLateral = 0; // default track center
+
+            // Search for upcoming objects within look-ahead window
+            let nearestHazard = null;
+            let nearestOrb = null;
+            let nearestPad = null;
+            let minHazardDist = 0.04;
+            let minOrbDist = 0.035;
+            let minPadDist = 0.035;
+
+            hazardClusters.forEach(cluster => {
+                const dist = progressDistance(trackProgress, cluster.progress);
+                if (dist < minHazardDist && cluster.progress > trackProgress) {
+                    minHazardDist = dist;
+                    nearestHazard = cluster;
+                }
+            });
+
+            energyOrbs.forEach(orb => {
+                if (orb.collectedLap === raceLap || !orb.group.visible) return;
+                const dist = progressDistance(trackProgress, orb.progress);
+                if (dist < minOrbDist && orb.progress > trackProgress) {
+                    minOrbDist = dist;
+                    nearestOrb = orb;
+                }
+            });
+
+            boostPads.forEach(pad => {
+                if (pad.lastTriggerLap === raceLap) return;
+                const dist = progressDistance(trackProgress, pad.progress);
+                if (dist < minPadDist && pad.progress > trackProgress) {
+                    minPadDist = dist;
+                    nearestPad = pad;
+                }
+            });
+
+            // Priority: Hazard Avoidance > Boost Pad > Energy Orb > Track Center
+            if (nearestHazard) {
+                const blockedOffsets = nearestHazard.blocked;
+                if (blockedOffsets.includes(-2.8) && blockedOffsets.includes(0)) targetLateral = 2.8;
+                else if (blockedOffsets.includes(0) && blockedOffsets.includes(2.8)) targetLateral = -2.8;
+                else if (blockedOffsets.includes(-2.8) && blockedOffsets.includes(2.8)) targetLateral = 0;
+                else if (blockedOffsets.includes(0)) targetLateral = 2.5;
+            } else if (nearestPad) {
+                targetLateral = nearestPad.offset;
+            } else if (nearestOrb) {
+                targetLateral = nearestOrb.offset;
+            }
+
+            // Keep within track borders
+            targetLateral = THREE.MathUtils.clamp(targetLateral, -TRACK_HALF_WIDTH + 1.2, TRACK_HALF_WIDTH - 1.2);
+
+            // PD Controller for smooth steering
+            const error = targetLateral - lateralOffset;
+            const steerForce = error * 3.8 - lateralVelocity * 0.85;
+
+            keys.left = steerForce < -0.2;
+            keys.right = steerForce > 0.2;
+
+            // Auto Boost Trigger
+            if (turboEnergy >= 50 && !isBoosted && Math.abs(error) < 1.0) {
+                const currentFrame = getTrackFrame(trackProgress);
+                if (Math.abs(currentFrame.tangent.y) < 0.2) {
+                    triggerBoost();
+                }
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = Math.min(clock.getDelta(), 0.033);
+            const time = clock.getElapsedTime();
+            isBoosted = performance.now() < boostUntil;
+            if (gameState === 'racing' && !isBoosted) turboEnergy = Math.min(100, turboEnergy + delta * 3.2);
+
+            // Run Autonomous Pilot algorithm
+            updateAutonomousPilot(delta);
+
+            if (trackCurve && marble) {
+                if (gameState === 'racing' && !isFalling && !raceFinished) {
+                    const previousProgress = trackProgress;
+                    const frame = getTrackFrame(trackProgress);
+                    const steer = (keys.right ? 1 : 0) - (keys.left ? 1 : 0);
+
+                    const gravityAcceleration = THREE.MathUtils.clamp(-frame.tangent.y * 0.000035, -0.000018, 0.00004);
+                    const envGrip = currentEnv === 'ice' ? 0.72 : currentEnv === 'space' ? 0.88 : 1.0;
+                    forwardVelocity += (gravityAcceleration + 0.0000018) * delta * 60;
+                    forwardVelocity *= Math.pow(currentEnv === 'ice' ? 0.9997 : 0.9992, delta * 60);
+                    forwardVelocity = THREE.MathUtils.clamp(forwardVelocity, 0.00072, 0.00265);
+
+                    const boostVelocity = isBoosted ? 0.00135 : 0;
+                    trackProgress += (forwardVelocity + boostVelocity) * delta * 60;
+                    if (trackProgress >= 1) trackProgress -= 1;
+                    updateCheckpoints(previousProgress, trackProgress);
+
+                    lateralVelocity += steer * 4.5 * envGrip * delta;
+                    lateralVelocity *= Math.pow(currentEnv === 'ice' ? 0.22 : 0.035, delta);
+                    lateralOffset += lateralVelocity * delta;
+
+                    if (Math.abs(lateralOffset) > TRACK_HALF_WIDTH - 0.8) {
+                        if (!(isBoosted && Math.abs(lateralVelocity) > 1.15)) {
+                            lateralOffset = Math.sign(lateralOffset) * (TRACK_HALF_WIDTH - 0.8);
+                            lateralVelocity *= -0.42;
+                            sound.playImpact(0.22);
+                        } else {
+                            isFalling = true;
+                        }
+                    }
+                    if (Math.abs(lateralOffset) > TRACK_HALF_WIDTH + 1.0) isFalling = true;
+
+                    const currentFrame = getTrackFrame(trackProgress);
+                    marble.position.copy(currentFrame.center)
+                        .addScaledVector(currentFrame.side, lateralOffset)
+                        .addScaledVector(currentFrame.up, 1.72);
+
+                    if (!isFalling && Math.abs(lateralOffset) < TRACK_HALF_WIDTH - 1.2) {
+                        lastSafeProgress = trackProgress;
+                    }
+
+                    if (isFalling) {
+                        fallTimer = 0;
+                        fallVelocity.copy(currentFrame.tangent).multiplyScalar((forwardVelocity + boostVelocity) * 9000);
+                        fallVelocity.addScaledVector(currentFrame.side, lateralVelocity * 0.75);
+                        fallVelocity.y += 2.2;
+                        showRaceMessage('BERLINDE FORA DA PISTA', 1200);
+                    }
+                } else if (gameState === 'racing' && isFalling) {
+                    fallTimer += delta;
+                    fallVelocity.y -= 18 * delta;
+                    marble.position.addScaledVector(fallVelocity, delta);
+                    marble.rotation.x += fallVelocity.length() * 0.012;
+                    if (fallTimer > 1.65 || marble.position.y < -75) respawnMarble();
+                }
+
+                speed = gameState === 'racing' && !raceFinished ? Math.max(0, Math.floor((forwardVelocity + (isBoosted ? 0.00135 : 0)) * 52000)) : 0;
+                updateSpeedometer(speed);
+                sound.updateRollSound(isFalling ? 0 : speed);
+
+                marble.rotation.x += speed * 0.0022 * delta * 60;
+                marble.rotation.z += (speed * 0.0012 + lateralVelocity * 0.02) * delta * 60;
+
+                if (currentMaterial === 'arcoiris') marble.material.color.setHSL((time * 0.5) % 1, 0.9, 0.5);
+
+                if (camMode === 'follow') {
+                    const cameraFrame = getTrackFrame(trackProgress);
+                    let desired;
+                    let lookTarget;
+                    if (gameState === 'menu' || gameState === 'loading') {
+                        const orbitAngle = time * 0.13;
+                        desired = cameraFrame.center.clone().add(new THREE.Vector3(Math.sin(orbitAngle) * 25, 15, Math.cos(orbitAngle) * 25));
+                        lookTarget = cameraFrame.center.clone().addScaledVector(cameraFrame.up, 2);
+                    } else {
+                        desired = marble.position.clone()
+                            .addScaledVector(cameraFrame.tangent, -16)
+                            .addScaledVector(cameraFrame.up, 8.5)
+                            .addScaledVector(cameraFrame.side, lateralOffset * 0.18);
+                        lookTarget = marble.position.clone().addScaledVector(cameraFrame.tangent, 10).addScaledVector(cameraFrame.up, 1.2);
+                    }
+                    camera.position.lerp(desired, 1 - Math.pow(0.002, delta));
+                    camera.lookAt(lookTarget);
+                } else {
+                    controls.target.lerp(marble.position, 0.08);
+                    controls.update();
+                }
+            }
+
+            updateOpponents(delta, time);
+            updateArcadeFeatures(delta, time);
+            updateRaceHUD();
+            updateTimeDisplays();
+
+            if (particlesSystem) particlesSystem.rotation.y = time * 0.05;
+
+            frameCount++;
+            const now = performance.now();
+            if (now - lastFpsUpdate >= 1000) {
+                document.getElementById('fps-counter').textContent = frameCount;
+                frameCount = 0;
+                lastFpsUpdate = now;
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        function updateSpeedometer(value) {
+            const speedVal = document.getElementById('speed-value');
+            const speedMeter = document.getElementById('speed-meter');
+            speedVal.textContent = value;
+            const offset = 283 - (Math.min(value, 150) / 150) * 200;
+            speedMeter.style.strokeDashoffset = offset;
+        }
+
+        async function generateAITrack(promptText) {
+            sound.init();
+            sound.playBoost();
+
+            const statusContainer = document.getElementById('ai-status-container');
+            const statusText = document.getElementById('ai-status-text');
+            const conceptWrapper = document.getElementById('concept-art-wrapper');
+            const conceptImg = document.getElementById('concept-art-img');
+            const titleBadge = document.getElementById('ai-track-title-badge');
+
+            statusContainer.classList.remove('hidden');
+            conceptWrapper.classList.add('hidden');
+            statusText.textContent = "Gemini a desenhar geometria da pista...";
+
+            try {
+                const trackData = await generateTrackDataWithGemini(promptText);
+                titleBadge.textContent = trackData.trackTitle || "Pista IA";
+                statusText.textContent = "A carregar pista e iluminação...";
+
+                let customPoints = [];
+                if (trackData.points && trackData.points.length > 3) {
+                    customPoints = trackData.points.map(p => new THREE.Vector3(p.x, p.y, p.z));
+                }
+
+                createEnvironment(trackData.theme || 'volcano');
+                if (customPoints.length > 0) createTrack(trackData.theme || 'volcano', customPoints);
+
+                generateConceptArtWithImagen(trackData.conceptArtPrompt || promptText).then(imgUrl => {
+                    if (imgUrl) {
+                        conceptImg.src = imgUrl;
+                        conceptWrapper.classList.remove('hidden');
+                    }
+                }).catch(() => {});
+
+                if (trackData.announcerLine) speakAnnouncerLine(trackData.announcerLine);
+                statusText.textContent = `✅ Pista "${trackData.trackTitle}" criada!`;
+
+            } catch (err) {
+                statusText.textContent = "⚠️ Utilizando gerador procedural...";
+                createEnvironment('volcano');
+                createTrack('volcano');
+            }
+        }
+
+        function setupUIEventListeners() {
+            document.querySelectorAll('.mode-btn').forEach(btn => btn.addEventListener('click', () => selectMode(btn.dataset.mode)));
+            document.querySelectorAll('.menu-env-btn').forEach(btn => btn.addEventListener('click', () => selectEnvironment(btn.dataset.env)));
+            document.querySelectorAll('.menu-marble-btn').forEach(btn => btn.addEventListener('click', () => selectMarble(btn.dataset.material)));
+            
+            document.getElementById('btn-start-race').addEventListener('click', startCountdown);
+            document.getElementById('btn-race-again').addEventListener('click', startCountdown);
+            document.getElementById('btn-main-menu').addEventListener('click', showMainMenu);
+            document.getElementById('btn-next-round').addEventListener('click', advanceChampionship);
+            document.getElementById('btn-pause').addEventListener('click', () => togglePause());
+            document.getElementById('btn-resume-race').addEventListener('click', () => togglePause(true));
+            document.getElementById('btn-pause-restart').addEventListener('click', startCountdown);
+            document.getElementById('btn-pause-menu').addEventListener('click', showMainMenu);
+
+            // Auto-pilot toggle buttons
+            document.getElementById('btn-toggle-auto-menu').addEventListener('click', toggleAutoPilot);
+            document.getElementById('btn-toggle-autopilot').addEventListener('click', toggleAutoPilot);
+
+            document.getElementById('btn-audio').addEventListener('click', () => {
+                if (!sound.ctx) sound.init();
+                else sound.enabled = !sound.enabled;
+                if (!sound.enabled && sound.rollGain) sound.rollGain.gain.setTargetAtTime(0, sound.ctx.currentTime, 0.03);
+                const icon = document.getElementById('audio-icon');
+                icon.className = sound.enabled ? "fa-solid fa-volume-high text-amber-400" : "fa-solid fa-volume-xmark text-slate-400";
+            });
+
+            document.getElementById('btn-cam').addEventListener('click', () => {
+                camMode = camMode === 'follow' ? 'free' : 'follow';
+                document.getElementById('cam-mode-text').textContent = camMode === 'follow' ? "Câmara: Seguir" : "Câmara: Livre 3D";
+            });
+
+            document.getElementById('btn-boost').addEventListener('click', triggerBoost);
+            document.getElementById('btn-restart').addEventListener('click', () => { sound.init(); sound.playImpact(0.8); startCountdown(); });
+
+            document.querySelectorAll('.marble-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sound.init(); sound.playImpact(0.4);
+                    document.querySelectorAll('.marble-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selectMarble(btn.dataset.material);
+                });
+            });
+
+            document.querySelectorAll('.env-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    sound.init(); sound.playBoost();
+                    document.querySelectorAll('.env-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    selectEnvironment(btn.dataset.env);
+                    if (gameState === 'racing' || gameState === 'countdown') startCountdown();
+                });
+            });
+
+            const aiModal = document.getElementById('ai-modal');
+            document.getElementById('btn-open-ai').addEventListener('click', () => aiModal.classList.remove('hidden'));
+            document.getElementById('btn-close-ai').addEventListener('click', () => aiModal.classList.add('hidden'));
+
+            document.getElementById('btn-generate-track').addEventListener('click', () => {
+                const input = document.getElementById('ai-prompt-input');
+                if (input.value.trim() !== '') {
+                    generateAITrack(input.value.trim());
+                    aiModal.classList.add('hidden');
+                }
+            });
+
+            document.querySelectorAll('.prompt-chip').forEach(chip => {
+                chip.addEventListener('click', () => {
+                    const text = chip.textContent.trim();
+                    document.getElementById('ai-prompt-input').value = text;
+                    generateAITrack(text);
+                    aiModal.classList.add('hidden');
+                });
+            });
+
+            document.getElementById('btn-announcer').addEventListener('click', () => {
+                sound.init();
+                const commentaryList = [
+                    `E lá vai o berlinde no Modo Automático a ultrapassar os ${speed} km/h!`,
+                    `Trajectória perfeita do piloto automático na pista ${currentEnv}!`,
+                    `Controlo autónomo em tempo real! MARBLE RUSH eleva a simulação 3D!`
+                ];
+                speakAnnouncerLine(commentaryList[Math.floor(Math.random() * commentaryList.length)]);
+            });
+
+            const engModal = document.getElementById('engineer-modal');
+            document.getElementById('btn-open-engineer').addEventListener('click', () => engModal.classList.toggle('hidden'));
+            document.getElementById('btn-close-engineer').addEventListener('click', () => engModal.classList.add('hidden'));
+
+            const sendEngBtn = document.getElementById('btn-send-engineer');
+            const engInput = document.getElementById('engineer-input');
+            const chatLog = document.getElementById('engineer-chat-log');
+
+            async function handleEngMessage(qText) {
+                if (!qText.trim()) return;
+                const userDiv = document.createElement('div');
+                userDiv.className = "bg-white/10 p-2.5 rounded-xl text-right text-amber-300 font-semibold";
+                userDiv.textContent = qText;
+                chatLog.appendChild(userDiv);
+                engInput.value = '';
+                chatLog.scrollTop = chatLog.scrollHeight;
+
+                const loadDiv = document.createElement('div');
+                loadDiv.className = "bg-blue-950/40 border border-blue-500/20 p-2.5 rounded-xl text-slate-400 italic";
+                loadDiv.textContent = "Engenheiro IA a analisar dados...";
+                chatLog.appendChild(loadDiv);
+                chatLog.scrollTop = chatLog.scrollHeight;
+
+                const ans = await askAIEngineer(qText);
+                chatLog.removeChild(loadDiv);
+
+                const aiDiv = document.createElement('div');
+                aiDiv.className = "bg-blue-950/40 border border-blue-500/20 p-2.5 rounded-xl";
+                aiDiv.textContent = ans;
+                chatLog.appendChild(aiDiv);
+                chatLog.scrollTop = chatLog.scrollHeight;
+            }
+
+            sendEngBtn.addEventListener('click', () => handleEngMessage(engInput.value));
+            engInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleEngMessage(engInput.value); });
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        window.onload = function() {
+            initThree();
+            createMarble();
+            createOpponents();
+            createEnvironment('volcano');
+            setupUIEventListeners();
+            setupPlayableControls();
+            resetRace(false);
+            syncChoiceButtons();
+            updateCareerUI();
+            animate();
+            setTimeout(() => {
+                document.getElementById('loading-screen')?.classList.add('hidden');
+                showMainMenu();
+            }, 650);
+        };
+    </script>
 </body>
 </html>
