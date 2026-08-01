@@ -145,10 +145,6 @@
             transition: .2s ease;
         }
         .primary-play:hover { transform: translateY(-2px) scale(1.01); filter: brightness(1.08); }
-        .auto-play-badge {
-            background: linear-gradient(100deg, #10b981, #06b6d4, #3b82f6);
-            box-shadow: 0 12px 35px rgba(16,185,129,.35);
-        }
         .countdown-number {
             font-size: clamp(88px, 20vw, 210px);
             line-height: .9;
@@ -410,9 +406,9 @@
                 <button id="btn-audio" class="glass-button w-10 h-10 rounded-xl flex items-center justify-center text-slate-200" title="Ativar/Desativar Som">
                     <i class="fa-solid fa-volume-high" id="audio-icon"></i>
                 </button>
-                <button id="btn-announcer" class="glass-button px-3 h-10 rounded-xl flex items-center gap-2 text-xs font-semibold text-amber-300 border border-amber-500/30 transition-all duration-300">
-                    <i class="fa-solid fa-microphone-lines" id="announcer-icon"></i>
-                    <span class="hidden sm:inline" id="announcer-btn-text">Comentador IA</span>
+                <button id="btn-announcer" class="glass-button auto-mode-active px-3 h-10 rounded-xl flex items-center gap-2 text-xs font-semibold text-amber-300 border border-amber-500/30 transition-all duration-300">
+                    <i class="fa-solid fa-microphone-lines animate-pulse text-amber-400" id="announcer-icon"></i>
+                    <span class="hidden sm:inline" id="announcer-btn-text">Comentador: AUTO</span>
                 </button>
                 <button id="btn-cam" class="glass-button px-3 h-10 rounded-xl flex items-center gap-2 text-xs font-semibold text-slate-200">
                     <i class="fa-solid fa-video"></i>
@@ -753,7 +749,7 @@
             }
         }
 
-        // --- GEMINI APIS ---
+        // --- GEMINI APIS & TTS ---
         async function generateTrackDataWithGemini(prompt) {
             if (!API_KEY) throw new Error("Gemini API não configurada; usar gerador local.");
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
@@ -803,9 +799,6 @@
 
         async function speakAnnouncerLine(textPrompt) {
             sound.init();
-            const announcerBtn = document.getElementById('btn-announcer');
-            const announcerIcon = document.getElementById('announcer-icon');
-            const announcerText = document.getElementById('announcer-btn-text');
             const toast = document.getElementById('announcer-toast');
             const toastText = document.getElementById('announcer-toast-text');
 
@@ -868,6 +861,31 @@
             }
         }
 
+        // --- STREAMING_CHUNK:Defining AI Announcer Engine ---
+        let autoAnnouncerEnabled = true;
+        let lastAutoAnnounceTime = 0;
+
+        function triggerDynamicAutoCommentary(customMessage = null) {
+            if (!autoAnnouncerEnabled) return;
+            const now = performance.now();
+            if (!customMessage && now - lastAutoAnnounceTime < 9500) return;
+            
+            let phrase = customMessage;
+            if (!phrase) {
+                const phrases = [
+                    `E lá vai o Berlinde de ${currentMaterial} a rolar pela pista a ${speed} km/h!`,
+                    `O piloto automático mantém uma trajectória excelente em ${trackNames[currentEnv] || 'corrida'}!`,
+                    `Que corrida fantástica! O berlinde desvia-se dos obstáculos com precisão!`,
+                    `Super desempenho no modo automático hands-free! A velocidade impressiona!`,
+                    `Aproximamo-nos da meta! A disputa continua ao mais alto nível!`
+                ];
+                phrase = phrases[Math.floor(Math.random() * phrases.length)];
+            }
+
+            lastAutoAnnounceTime = now;
+            speakAnnouncerLine(phrase);
+        }
+
         function pcmToWav(pcm16, sampleRate = 24000) {
             const buffer = new ArrayBuffer(44 + pcm16.length * 2);
             const view = new DataView(buffer);
@@ -893,9 +911,9 @@
         async function askAIEngineer(question) {
             if (!API_KEY) {
                 const q = question.toLowerCase();
-                if (q.includes('auto') || q.includes('automático')) return "No Modo Automático, o sistema de pilotagem calcula as trajectórias em tempo real, optimizando as travagens e antecipando as esferas de energia.";
-                if (q.includes('veloc')) return "Para alta velocidade, usa o Berlinde de Energia e conserva o turbo para as descidas longas.";
-                return "Modo Automático ativo! Podes relaxar ou mudar para controlo manual a qualquer momento no topo.";
+                if (q.includes('auto') || q.includes('automático')) return "No Modo Automático, o sistema calcula trajectórias dinâmicas em tempo real, optimizando travagens e desvios de obstáculos.";
+                if (q.includes('veloc')) return "Para alta velocidade, utiliza o Berlinde de Energia e guarda o turbo para as rectas inclinadas.";
+                return "Modo Automático ativo! Podes assistir confortavelmente à corrida!";
             }
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`;
             const payload = {
@@ -906,7 +924,7 @@
             return data.candidates?.[0]?.content?.parts?.[0]?.text || "Ajuste de telemetria concluído!";
         }
 
-        // --- GLOBAL GAME ENGINE VARIABLES ---
+        // --- STREAMING_CHUNK:Initializing State Variables & 3D Scene ---
         let scene, camera, renderer, controls;
         let marble, trackMesh, trackCurve;
         let particlesSystem, environmentObjects = [];
@@ -970,7 +988,6 @@
         const keys = { left: false, right: false };
         let opponents = [];
 
-        // --- AUTONOMOUS PILOT SYSTEM ---
         let autoPilotEnabled = true;
         let autoContinueTimer = null;
         let autoContinueSeconds = 3;
@@ -1002,7 +1019,7 @@
             controls.dampingFactor = 0.05;
             controls.maxDistance = 150;
 
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.35);
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
             scene.add(ambientLight);
 
             const mainLight = new THREE.DirectionalLight(0xffaa55, 2.5);
@@ -1050,6 +1067,7 @@
             return { center, tangent, side, up };
         }
 
+        // --- STREAMING_CHUNK:Building Track Geometry & Arcade Elements ---
         function createTrack(theme = 'volcano', customPoints = null) {
             if (trackMesh) disposeObject3D(trackMesh);
 
@@ -1426,6 +1444,7 @@
             return 'NOVATO';
         }
 
+        // --- STREAMING_CHUNK:Updating UI & Autonomous Pilot Logic ---
         function updateCareerUI() {
             const stars = totalCareerStars();
             const level = Math.min(5, Math.floor(stars / 3) + 1);
@@ -1464,7 +1483,6 @@
             const startLabel = document.getElementById('start-button-label');
             if (startLabel) startLabel.textContent = gameMode === 'championship' ? 'COMEÇAR CAMPEONATO' : 'INICIAR CORRIDA';
             
-            // Update Auto Mode UI elements
             const autoMenuBtn = document.getElementById('btn-toggle-auto-menu');
             const autoMenuText = document.getElementById('auto-menu-status');
             const autoHudBtn = document.getElementById('btn-toggle-autopilot');
@@ -1593,7 +1611,7 @@
                         raceStartTime = performance.now();
                         elapsedRaceTime = 0;
                         gameState = 'racing';
-                        showRaceMessage(autoPilotEnabled ? '🤖 RUSH! PILOTO AUTOMÁTICO NA PISTA' : '🎮 RUSH! MANUELA A PRIMEIRA POSIÇÃO', 1800);
+                        showRaceMessage(autoPilotEnabled ? '🤖 RUSH! PILOTO AUTOMÁTICO NA PISTA' : '🎮 RUSH! MANTER A PRIMEIRA POSIÇÃO', 1800);
                         setTimeout(() => {
                             if (sequenceId !== countdownSequenceId) return;
                             screen.classList.add('hidden');
@@ -1705,7 +1723,6 @@
                 if (isTrackUnlocked(nextEnv)) nextButton?.classList.remove('hidden');
             }
 
-            // AUTO CONTINUE CONTROLLER
             const autoBanner = document.getElementById('auto-continue-banner');
             const autoTimerEl = document.getElementById('auto-continue-timer');
 
@@ -1735,9 +1752,9 @@
             updateTimeDisplays();
 
             if (finalRacePosition === 1) {
-                speakAnnouncerLine('Vitória no Modo Automático! O piloto robótico cruzou a meta em primeiro lugar!');
+                triggerDynamicAutoCommentary('Vitória no Modo Automático! O piloto robótico cruzou a meta em primeiro lugar!');
             } else {
-                speakAnnouncerLine(`Corrida concluída em ${finalRacePosition}.º lugar! Excelente performance!`);
+                triggerDynamicAutoCommentary(`Corrida concluída em ${finalRacePosition}.º lugar! Excelente performance!`);
             }
 
             setTimeout(() => document.getElementById('finish-screen')?.classList.remove('hidden'), 1000);
@@ -1829,6 +1846,10 @@
             isBoosted = true;
             boostUntil = performance.now() + 1550;
             showRaceMessage('TURBO ATIVADO!', 900);
+            
+            if (Math.random() < 0.35) {
+                triggerDynamicAutoCommentary('Ativação de Turbo Super-sónico! Que disparo incrível!');
+            }
         }
 
         function updateCheckpoints(previousProgress, currentProgress) {
@@ -1850,6 +1871,7 @@
                         nextCheckpoint = 0;
                         resetArcadeLap();
                         showRaceMessage(`VOLTA ${raceLap}/${totalLaps}`, 1800);
+                        triggerDynamicAutoCommentary(`Entramos na volta ${raceLap}! A disputa está ao rubro!`);
                     }
                 } else {
                     nextCheckpoint = 0;
@@ -2004,11 +2026,8 @@
         function updateAutonomousPilot(delta) {
             if (!autoPilotEnabled || gameState !== 'racing' || isFalling || raceFinished) return;
 
-            // Look ahead distance
-            const lookAheadProgress = (trackProgress + 0.025) % 1;
-            let targetLateral = 0; // default track center
+            let targetLateral = 0;
 
-            // Search for upcoming objects within look-ahead window
             let nearestHazard = null;
             let nearestOrb = null;
             let nearestPad = null;
@@ -2042,7 +2061,6 @@
                 }
             });
 
-            // Priority: Hazard Avoidance > Boost Pad > Energy Orb > Track Center
             if (nearestHazard) {
                 const blockedOffsets = nearestHazard.blocked;
                 if (blockedOffsets.includes(-2.8) && blockedOffsets.includes(0)) targetLateral = 2.8;
@@ -2055,17 +2073,14 @@
                 targetLateral = nearestOrb.offset;
             }
 
-            // Keep within track borders
             targetLateral = THREE.MathUtils.clamp(targetLateral, -TRACK_HALF_WIDTH + 1.2, TRACK_HALF_WIDTH - 1.2);
 
-            // PD Controller for smooth steering
             const error = targetLateral - lateralOffset;
             const steerForce = error * 3.8 - lateralVelocity * 0.85;
 
             keys.left = steerForce < -0.2;
             keys.right = steerForce > 0.2;
 
-            // Auto Boost Trigger
             if (turboEnergy >= 50 && !isBoosted && Math.abs(error) < 1.0) {
                 const currentFrame = getTrackFrame(trackProgress);
                 if (Math.abs(currentFrame.tangent.y) < 0.2) {
@@ -2074,6 +2089,7 @@
             }
         }
 
+        // --- STREAMING_CHUNK:Executing Render Loop & AI Track Builder ---
         function animate() {
             requestAnimationFrame(animate);
 
@@ -2082,8 +2098,11 @@
             isBoosted = performance.now() < boostUntil;
             if (gameState === 'racing' && !isBoosted) turboEnergy = Math.min(100, turboEnergy + delta * 3.2);
 
-            // Run Autonomous Pilot algorithm
             updateAutonomousPilot(delta);
+
+            if (gameState === 'racing') {
+                triggerDynamicAutoCommentary();
+            }
 
             if (trackCurve && marble) {
                 if (gameState === 'racing' && !isFalling && !raceFinished) {
@@ -2237,12 +2256,13 @@
                 statusText.textContent = `✅ Pista "${trackData.trackTitle}" criada!`;
 
             } catch (err) {
-                statusText.textContent = "⚠️ Utilizando gerador procedural...";
+                statusText.textContent = "⚠️ Utilizando gerador local...";
                 createEnvironment('volcano');
                 createTrack('volcano');
             }
         }
 
+        // --- STREAMING_CHUNK:Binding Event Listeners & Bootstrapping App ---
         function setupUIEventListeners() {
             document.querySelectorAll('.mode-btn').forEach(btn => btn.addEventListener('click', () => selectMode(btn.dataset.mode)));
             document.querySelectorAll('.menu-env-btn').forEach(btn => btn.addEventListener('click', () => selectEnvironment(btn.dataset.env)));
@@ -2257,7 +2277,6 @@
             document.getElementById('btn-pause-restart').addEventListener('click', startCountdown);
             document.getElementById('btn-pause-menu').addEventListener('click', showMainMenu);
 
-            // Auto-pilot toggle buttons
             document.getElementById('btn-toggle-auto-menu').addEventListener('click', toggleAutoPilot);
             document.getElementById('btn-toggle-autopilot').addEventListener('click', toggleAutoPilot);
 
@@ -2319,12 +2338,23 @@
 
             document.getElementById('btn-announcer').addEventListener('click', () => {
                 sound.init();
-                const commentaryList = [
-                    `E lá vai o berlinde no Modo Automático a ultrapassar os ${speed} km/h!`,
-                    `Trajectória perfeita do piloto automático na pista ${currentEnv}!`,
-                    `Controlo autónomo em tempo real! MARBLE RUSH eleva a simulação 3D!`
-                ];
-                speakAnnouncerLine(commentaryList[Math.floor(Math.random() * commentaryList.length)]);
+                autoAnnouncerEnabled = !autoAnnouncerEnabled;
+                const btn = document.getElementById('btn-announcer');
+                const icon = document.getElementById('announcer-icon');
+                const text = document.getElementById('announcer-btn-text');
+
+                if (autoAnnouncerEnabled) {
+                    btn.classList.add('auto-mode-active');
+                    icon.className = "fa-solid fa-microphone-lines animate-pulse text-amber-400";
+                    text.textContent = "Comentador: AUTO";
+                    showRaceMessage('🎙️ COMENTADOR IA AUTOMÁTICO ATIVADO', 1800);
+                    triggerDynamicAutoCommentary('Comentador automático ativado! Acompanharei toda a corrida em direto!');
+                } else {
+                    btn.classList.remove('auto-mode-active');
+                    icon.className = "fa-solid fa-microphone-slash text-slate-400";
+                    text.textContent = "Comentador: OFF";
+                    showRaceMessage('🎙️ COMENTADOR IA DESATIVADO', 1800);
+                }
             });
 
             const engModal = document.getElementById('engineer-modal');
@@ -2383,7 +2413,7 @@
             animate();
             setTimeout(() => {
                 document.getElementById('loading-screen')?.classList.add('hidden');
-                showMainMenu();
+                startCountdown();
             }, 650);
         };
     </script>
